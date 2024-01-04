@@ -1,0 +1,32 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" [routerLink]="['/notes']">Home</a>
+        
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+            <ng-container *ngIf="isLoggedIn; else loginButtons">
+              <!-- Mostrar botones si el usuario está autenticado -->
+              <li class="nav-item">
+                <span class="nav-link">{{ userName }}</span>
+              </li>
+              <li class="nav-item">
+                <button class="btn btn-outline-primary" (click)="logout()">Logout</button>
+              </li>
+            </ng-container>
+  
+            <ng-template #loginButtons>
+              <!-- Mostrar botones si el usuario no está autenticado -->
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/register">Register</a>
+              </li>
+            </ng-template>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  

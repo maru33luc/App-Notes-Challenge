@@ -1,1 +1,7 @@
-<p>edit-note works!</p>
+<div class="container mt-4">
+    <h1>Editar Nota</h1>
+  <app-form-notes [title]="title" [content]="content"
+  [categoriaId]="categoriaId"
+  (sendNote)="sendData($event)"></app-form-notes>
+    
+  </div>

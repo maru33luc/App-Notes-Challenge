@@ -12,10 +12,12 @@ module.exports = {
     },
     createNote : async (req, res) => {
         try {
-            const { title, content } = req.body;
+            const { title, content, usuarioId, categoriaId } = req.body;
             const note = await noteServices.createNote({
                 title,
-                content
+                content,
+                usuarioId,
+                categoriaId
             });
             res.json(note);
         } catch (error) {
@@ -36,10 +38,11 @@ module.exports = {
     updateNoteById : async (req, res) => {
         try {
             const { id } = req.params;
-            const { title, content } = req.body;
+            const { title, content, categoriaId } = req.body;
             const note = await noteServices.updateNoteById(id, {
                 title,
-                content
+                content,
+                categoriaId
             });
             res.json(note);
         } catch (error) {

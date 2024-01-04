@@ -1,6 +1,8 @@
+import { NoteService } from './../../../services/note.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from '../../../services/category.service';
+import { Note } from '../../../interfaces/Note';
 
 @Component({
   selector: 'app-new-note',
@@ -8,34 +10,12 @@ import { CategoryService } from '../../../services/category.service';
   styleUrls: ['./new-note.component.css']
 })
 export class NewNoteComponent {
-  categories: any[] = [];
+  
+  constructor(private noteService: NoteService) {}
 
-  constructor(private formBuilder: FormBuilder,
-    private categoryService: CategoryService) {}
-
-  newNoteForm: FormGroup = this.formBuilder.group({
-    title: ['', [Validators.required, Validators.maxLength(50)]],
-    content: ['', [Validators.required, Validators.maxLength(500)]],
-    categoriaId: ['', [Validators.required]],
-  });
-
-  obtenerCategorias = async () => {
-    this.categories = await this.categoryService.getCategories();
-    console.log(this.categories);
+  sendData(note : Note) {
+    this.noteService.createNote(note);
   }
 
-  ngOnInit(): void {
-
-    this.obtenerCategorias();
-  }
-
-  onSubmit() {
-    if (this.newNoteForm && this.newNoteForm.valid) {
-      // Lógica para guardar la nueva nota
-      console.log('Formulario válido, guardando nota:', this.newNoteForm.value);
-    } else {
-      // Lógica para manejar el formulario no válido
-      console.log('Formulario no válido. Revise los campos.');
-    }
-  }
+  
 }
