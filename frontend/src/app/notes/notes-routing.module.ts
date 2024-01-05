@@ -9,11 +9,14 @@ import { EditNotePageComponent } from './pages/edit-note-page/edit-note-page.com
 import { CategoryListComponent } from '../categories/components/categories/categories.component';
 import { CategoriesPageComponent } from '../categories/pages/categories-page/categories-page.component';
 import { NewCategoryComponent } from '../categories/components/new-category/new-category.component';
+import { ArchivoComponent } from './components/archive/archive.component';
+import { ArchivePageComponent } from './pages/archive-page/archive-page.component';
 
 const routes: Routes = [
   { path: '', component: ListNotesPageComponent  },
   { path: 'nueva-nota', component: NewNotePageComponent},
   { path: 'editar-nota/:id', component: EditNotePageComponent},
+  { path: 'archive', component: ArchivePageComponent},
   
 ];
 

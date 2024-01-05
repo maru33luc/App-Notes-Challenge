@@ -30,6 +30,21 @@
   margin-bottom: 10px;
 }
 
-.btn-primary, .btn-danger {
+.btn-primary, .btn-danger, .btn-dark, .btn-secondary  {
   margin-right: 5px; 
+}
+
+.filters-btn{
+  display: flex!important;
+  margin-top: 10px;
+}
+
+.btn-primary, .btn-secondary {
+  /* width: auto!important;
+  display: inline-block!important; */
+}
+
+.col-md-12{
+
+  width: auto!important;
 }

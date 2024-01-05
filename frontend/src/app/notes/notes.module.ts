@@ -11,17 +11,22 @@ import { SharedModule } from '../shared/shared.module';
 import { ListNotesPageComponent } from './pages/list-notes-page/list-notes-page.component';
 import { EditNotePageComponent } from './pages/edit-note-page/edit-note-page.component';
 import { EditNoteComponent } from './components/edit-note/edit-note.component';
+import { ArchivoComponent } from './components/archive/archive.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ArchivePageComponent } from './pages/archive-page/archive-page.component';
 
 @NgModule({
   declarations: [ListNotesComponent, NewNoteComponent,
   FormNotesComponent, NewNotePageComponent, ListNotesPageComponent,
-EditNotePageComponent, EditNoteComponent],
+EditNotePageComponent, EditNoteComponent, ArchivoComponent,
+ArchivePageComponent],
   imports: [
     CommonModule,
     NotesRoutingModule, 
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    NgbModule
   ],
   providers: [DatePipe]
 })

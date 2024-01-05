@@ -38,6 +38,19 @@ module.exports = {
             return { error: 'Ocurrió un error al actualizar la nota' }
         }
     },
+    getNotesByStatus : async (status) => {
+        try {
+            const notes = await Note.findAll({
+                where: {
+                    activa: status
+                }
+            });
+            return notes;
+        } catch (error) {
+            console.log(error);
+            return { error: 'Ocurrió un error al obtener las notas' }
+        }
+    },
     deleteNoteById : async (id) => {
         try {
             const noteToDelete = await Note.findByPk(id);
@@ -47,7 +60,16 @@ module.exports = {
             console.log(error);
             return { error: 'Ocurrió un error al eliminar la nota' }
         }
-    }
-
-
+    },
+    updateStatusNoteById : async (id, status) => {
+        try {
+            const noteToUpdate = await Note.findByPk(id);
+            await noteToUpdate.update(status);
+            return noteToUpdate;
+        } catch (error) {
+            console.log(error);
+            return { error: 'Ocurrió un error al actualizar la nota' }
+        }
+    },
+   
 }

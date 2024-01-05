@@ -34,6 +34,11 @@ const Note = db.define('notas', {
         type: DataTypes.INTEGER, 
         allowNull: true 
     },
+    activa: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    }
     
 }, { timestamps: true });
 

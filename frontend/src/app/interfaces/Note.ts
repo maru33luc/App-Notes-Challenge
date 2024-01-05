@@ -7,5 +7,6 @@ export interface Note {
     updatedAt?: string;
     categoriaId?: number;
     categoria?: string;
+    activa?: boolean;
     }
 
