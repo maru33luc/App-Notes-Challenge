@@ -59,4 +59,32 @@ export class CategoryService {
     }
     return undefined; 
   }
+
+  async getCategoryById(id: number | undefined) {
+    try{
+      const res = await fetch(`http://localhost:3000/categories/${id}`);
+      const data = await res.json();
+      return data;
+    }catch(err){
+      console.log(err);
+    }
+    return undefined; 
+  }
+
+  async updateCategory(category: Category, id: number | undefined) {
+    try{
+      const res = await fetch(`http://localhost:3000/categories/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(category)
+      });
+      const data = await res.json();
+      return data;
+    }catch(err){
+      console.log(err);
+    }
+    return undefined; 
+  }
 }

@@ -17,7 +17,9 @@
         <td>{{ category.descripcion }}</td>
         <td>
           
-            <button type="button" class="btn btn-primary btn-sm" (click)="editCategory(category)">Editar</button>
+            <button type="button" class="btn btn-primary btn-sm"
+            [routerLink]="['/categories/editar-categoria', category.id]"
+            (click)="editCategory(category)">Editar</button>
             <button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(category.id)">Eliminar</button>
           
         </td>

@@ -14,14 +14,11 @@ export class EditNoteComponent {
   content?: string;
   categoriaId?: number;
   
-  
-
-  constructor(private noteService: NoteService, private router:Router, private route: ActivatedRoute)
+  constructor(private noteService: NoteService, 
+     private route: ActivatedRoute, private router: Router)
    { }
 
    ngOnInit () {
-
-
     this.route.params.subscribe(async (params) => {
       const id = params['id'];
             try {
@@ -40,6 +37,7 @@ export class EditNoteComponent {
   sendData(note: Note) {
     try{
       this.noteService.updateNote(note, this.route.snapshot.params['id']);
+      this.router.navigate(['/notes']);
     }catch(error){
       console.log(error);
     }
