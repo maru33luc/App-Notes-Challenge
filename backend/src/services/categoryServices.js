@@ -42,6 +42,7 @@ module.exports = {
         try {
             const categoryToDelete = await Category.findByPk(id);
             await categoryToDelete.destroy();
+            await Note.destroy({where: {categoriaId: id}});
             return categoryToDelete;
         } catch (error) {
             console.log(error);

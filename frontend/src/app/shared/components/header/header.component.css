@@ -1,0 +1,31 @@
+.navbar {
+    background-color: #f8f9fa; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    padding: 10px 0; 
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem; 
+    color: #007bff; 
+  }
+  
+  .nav-link {
+    margin-right: 10px; 
+    color: #6c757d; 
+    transition: color 0.3s; 
+  }
+  
+  .nav-link:hover {
+    color: #007bff;  
+    font-weight: bold;
+  }
+  
+  .btn-outline-primary {
+    margin-left: 10px; 
+  }
+  
+  .user{
+    /* cursor en forma de flecha */
+    cursor: grab;
+    user-select: none;
+  }

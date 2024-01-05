@@ -1,0 +1,22 @@
+/* Estilos para la página de listado de notas */
+.page-title {
+    font-size: 2rem; /* Tamaño de fuente más grande */
+    margin-bottom: 20px; /* Agregar espacio inferior */
+  }
+  
+  /* Estilos para el botón "Nueva Nota" */
+  .btn-success {
+    margin-bottom: 20px; /* Agregar espacio inferior */
+  }
+  
+  /* Estilos para la tabla de notas */
+  .table {
+    margin-bottom: 20px; /* Agregar espacio inferior */
+  }
+  
+  /* Estilos para las acciones de edición y eliminación */
+  .btn-primary, .btn-danger {
+    margin-right: 5px; /* Agregar margen derecho entre botones */
+  }
+  
+  

@@ -8,8 +8,10 @@ import { AuthService } from '../../../services/auth.service'; // Importa AuthSer
 })
 export class HeaderComponent {
 
-  isLoggedIn: boolean = this.authService.isLoggedIn();
-  userName: string | null = this.authService.getUserName();
+  // isLoggedIn: boolean = this.authService.isLoggedIn();
+  isLoggedIn: boolean = true;
+  // userName: string | null = this.authService.getUserName();
+  userName: string | null = 'user';
 
   constructor(private authService: AuthService) {}
 

@@ -28,4 +28,17 @@ export class CategoryService {
     }
     return []; 
   }
+
+  async deleteCategory(id: number | undefined) {
+    try{
+      const res = await fetch(`http://localhost:3000/categories/${id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      return data;
+    }catch(err){
+      console.log(err);
+    }
+    return undefined; 
+  }
 }

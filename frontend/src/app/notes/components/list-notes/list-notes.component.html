@@ -1,4 +1,4 @@
-<h1>LISTADO DE NOTAS</h1>
+<h1 class="page-title">LISTADO DE NOTAS</h1>
 
 <a class="btn btn-success" [routerLink]="['nueva-nota']">Nueva Nota</a>
 
@@ -6,32 +6,29 @@
   <div class="col-md-4">
     <div class="form-group">
       <label for="search">Buscar</label>
-      <input type="text" class="form-control" id="search" placeholder="Buscar" >
+      <input type="text" class="form-control" id="search" placeholder="Buscar">
     </div>
   </div>
 
-    <div class="col-md-4">
-        <div class="form-group">
-        <label for="order">Ordenar por</label>
-        <select class="form-control" id="order">
-            <option value="title">Título</option>
-            <option value="createdAt">Fecha de creación</option>
-        </select>
-        </div>
-
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="order">Ordenar por</label>
+      <select class="form-control" id="order">
+        <option value="title">Título</option>
+        <option value="createdAt">Fecha de creación</option>
+      </select>
     </div>
+  </div>
 
-    <div class="col-md-4">
-        <div class="form-group">
-        <label for="order">Orden</label>
-        <select class="form-control" id="order">
-            <option value="asc">Ascendente</option>
-            <option value="desc">Descendente</option>
-        </select>
-        </div>
-
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="orderDirection">Orden</label>
+      <select class="form-control" id="orderDirection">
+        <option value="asc">Ascendente</option>
+        <option value="desc">Descendente</option>
+      </select>
     </div>
-
+  </div>
 </div>
 
 <table class="table table-striped">
@@ -40,7 +37,8 @@
       <th scope="col">Título</th>
       <th scope="col">Contenido</th>
       <th scope="col">Fecha de creación</th>
-      <th scope="col">Categoria</th>
+      <th scope="col">Categoría</th>
+      <th scope="col">Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -49,14 +47,13 @@
       <td>{{ note.content }}</td>
       <td>{{ note.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
       <td>{{ note.categoria }}</td>
-      
       <td>
-        <button class="btn btn-primary btn-sm" [routerLink]="'editar-nota/' + note.id" >Editar</button>
+        <button class="btn btn-primary btn-sm" [routerLink]="'editar-nota/' + note.id">Editar</button>
         <button class="btn btn-danger btn-sm" (click)="deleteNote(note.id)">Eliminar</button>
       </td>
     </tr>
-
     <tr *ngIf="notes && notes.length === 0">
-      <td colspan="4">No hay notas</td>
+      <td colspan="5">No hay notas</td>
     </tr>
   </tbody>
+</table>

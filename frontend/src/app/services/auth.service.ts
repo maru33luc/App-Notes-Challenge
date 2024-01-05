@@ -8,19 +8,19 @@ export class AuthService {
   constructor() { }
 
   isLoggedIn () {
-    return !!localStorage.getItem('token')
+    // return !!localStorage.getItem('token')
   }
 
   getToken () {
-    return localStorage.getItem('token')
+    // return localStorage.getItem('token')
   }
 
   getUserName () {
-    return localStorage.getItem('userName')
+    // return localStorage.getItem('userName')
   }
 
   logout () {
-    localStorage.removeItem('token')
-    localStorage.removeItem('userName')
+    // localStorage.removeItem('token')
+    // localStorage.removeItem('userName')
   }
 }

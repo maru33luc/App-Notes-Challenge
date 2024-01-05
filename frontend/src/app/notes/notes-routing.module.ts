@@ -6,11 +6,14 @@ import { NewNotePageComponent } from './pages/new-note-page/new-note-page.compon
 import { ListNotesPageComponent } from './pages/list-notes-page/list-notes-page.component';
 import { EditNoteComponent } from './components/edit-note/edit-note.component';
 import { EditNotePageComponent } from './pages/edit-note-page/edit-note-page.component';
+import { CategoryListComponent } from './components/categories/categories.component';
+import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
 
 const routes: Routes = [
   { path: '', component: ListNotesPageComponent  },
   { path: 'nueva-nota', component: NewNotePageComponent},
-  { path: 'editar-nota/:id', component: EditNotePageComponent}
+  { path: 'editar-nota/:id', component: EditNotePageComponent},
+  { path: 'categories', component: CategoriesPageComponent},
 ];
 
 @NgModule({
