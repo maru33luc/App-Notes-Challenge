@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Category } from '../interfaces/Category';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,23 @@ export class CategoryService {
     try{
       const res = await fetch(`http://localhost:3000/categories/${id}`, {
         method: 'DELETE',
+      });
+      const data = await res.json();
+      return data;
+    }catch(err){
+      console.log(err);
+    }
+    return undefined; 
+  }
+
+  async createCategory(category: Category) {
+    try{
+      const res = await fetch(`http://localhost:3000/categories`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(category)
       });
       const data = await res.json();
       return data;

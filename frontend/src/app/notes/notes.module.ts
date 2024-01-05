@@ -11,15 +11,11 @@ import { SharedModule } from '../shared/shared.module';
 import { ListNotesPageComponent } from './pages/list-notes-page/list-notes-page.component';
 import { EditNotePageComponent } from './pages/edit-note-page/edit-note-page.component';
 import { EditNoteComponent } from './components/edit-note/edit-note.component';
-import { CategoryListComponent } from './components/categories/categories.component';
-import { CategoriesPageComponent } from './pages/categories-page/categories-page.component';
-
 
 @NgModule({
   declarations: [ListNotesComponent, NewNoteComponent,
   FormNotesComponent, NewNotePageComponent, ListNotesPageComponent,
-EditNotePageComponent, EditNoteComponent, CategoryListComponent,
-CategoriesPageComponent],
+EditNotePageComponent, EditNoteComponent],
   imports: [
     CommonModule,
     NotesRoutingModule, 

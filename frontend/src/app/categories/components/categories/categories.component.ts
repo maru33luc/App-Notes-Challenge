@@ -22,14 +22,12 @@ export class CategoryListComponent implements OnInit {
   }
 
   editCategory(category: Category): void {
-    
   }
 
   deleteCategory(categoryId: number | undefined): void {
     if (categoryId) {
-      console.log('categoryId', categoryId);
       this.categoryService.deleteCategory(categoryId);
-      this.loadCategories();
+      window.location.reload();
     }
   }
 }

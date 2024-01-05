@@ -1,0 +1,31 @@
+<div class="container">
+  <h2>Listado de Categorías</h2>
+  
+  <a class="btn btn-success" [routerLink]="['/categories/nueva-categoria']">Nueva Categoría</a>
+
+  <table class="table mt-3" *ngIf="categories && categories.length > 0">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{ category.nombre }}</td>
+        <td>{{ category.descripcion }}</td>
+        <td>
+          
+            <button type="button" class="btn btn-primary btn-sm" (click)="editCategory(category)">Editar</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(category.id)">Eliminar</button>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div *ngIf="categories && categories.length === 0">
+    No hay categorías.
+  </div>
+</div>

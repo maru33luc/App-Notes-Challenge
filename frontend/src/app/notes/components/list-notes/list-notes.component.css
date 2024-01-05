@@ -1,22 +1,35 @@
-/* Estilos para la página de listado de notas */
-.page-title {
-    font-size: 2rem; /* Tamaño de fuente más grande */
-    margin-bottom: 20px; /* Agregar espacio inferior */
-  }
-  
-  /* Estilos para el botón "Nueva Nota" */
-  .btn-success {
-    margin-bottom: 20px; /* Agregar espacio inferior */
-  }
-  
-  /* Estilos para la tabla de notas */
-  .table {
-    margin-bottom: 20px; /* Agregar espacio inferior */
-  }
-  
-  /* Estilos para las acciones de edición y eliminación */
-  .btn-primary, .btn-danger {
-    margin-right: 5px; /* Agregar margen derecho entre botones */
-  }
-  
-  
+.container {
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  text-align: center;
+}
+
+.table th {
+  background-color: #f8f9fa;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #f3f4f5;
+}
+
+.table tbody tr:hover {
+  background-color: #e9ecef;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.table-sm th, .table-sm td {
+  padding: 0.5rem;
+}
+
+.btn-success {
+  margin-bottom: 10px;
+}
+
+.btn-primary, .btn-danger {
+  margin-right: 5px; 
+}
