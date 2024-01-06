@@ -28,12 +28,9 @@ This project is a web application that allows you to efficiently manage your not
 ## Running the Application
 
 1. Clone the repository: git clone https://github.com/your-username/your-repo.git
-2. Navigate to the frontend folder: cd frontend
-3. Install dependencies: npm install
-4. Start the frontend: npm start
-5. Navigate to the backend folder: cd ../backend
-6. Install dependencies: npm install
-7. Start the backend: npm start
+2. Run the setup script for Windows: `script.bat`
+3. Run the setup script for Mac or Linux: `script.sh`
+
 The application is ready to be used!
 
 ## Configuration
