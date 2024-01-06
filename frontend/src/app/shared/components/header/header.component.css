@@ -29,3 +29,10 @@
     cursor: grab;
     user-select: none;
   }
+
+  @media screen and (max-width: 765px) {
+    .navbar-nav {
+      text-align: center; /* Centrar el texto de los enlaces */
+    }
+  }
+  

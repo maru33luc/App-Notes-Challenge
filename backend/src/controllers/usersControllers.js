@@ -24,7 +24,6 @@ module.exports = {
     addUser: async (req, res) => {
         try{
             const user = await userServices.addUser(req.body);
-            console.log('user en en controller', user);
             res.json(user);
         }catch(error){
             console.log(error);
@@ -54,7 +53,6 @@ module.exports = {
             const correo = req.body.correo;
             const contraseñaHash = req.body.contraseñaHash;
             const user = await userServices.getUserByEmailAndPassword(correo, contraseñaHash);
-        //    establecer una cookie de sesion
             req.session.user = user;
             req.session.auth = true;
             res.cookie('user', user, { httpOnly: true, secure: true });
@@ -75,7 +73,6 @@ module.exports = {
     },
     logout : (req, res) => {
         req.session.destroy();
-        // eliminar cookie del navegador
         res.clearCookie('user');
         res.json({message: 'Sesion cerrada'});
     }

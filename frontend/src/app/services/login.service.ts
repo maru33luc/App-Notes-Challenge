@@ -25,7 +25,6 @@ export class LoginService {
         correo: email,
         contraseñaHash: password
       }
-      console.log('userCredential', userCredential);
       const user = await axios.post('http://localhost:3000/users/auth', userCredential, { withCredentials: true });
 
       if (user) {
@@ -55,9 +54,7 @@ export class LoginService {
         }
       }
       try {
-        console.log('user', user);
         const userCredential = await axios.post('http://localhost:3000/users', user);
-        console.log(userCredential);
         alert('Usuario registrado con éxito');
       } catch (error) {
         alert('No se pudo registrar el usuario');
@@ -88,7 +85,6 @@ export class LoginService {
     try {
       const res = await axios.get('http://localhost:3000/users/auth', { withCredentials: true });
       if(res){
-        console.log('res.data', res.data);
         return res.data;
       }
       return null;

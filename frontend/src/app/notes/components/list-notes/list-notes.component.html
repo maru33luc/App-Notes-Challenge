@@ -77,7 +77,7 @@
         <td>{{ note.content }}</td>
         <td>{{ note.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
         <td>{{ note.categoria }}</td>
-        <td>
+        <td class="btn">
 
           <button class="btn btn-primary btn-sm" [routerLink]="'editar-nota/' + note.id">Editar</button>
           <button class="btn btn-dark btn-sm" (click)="fileNote(note.id)">Archivar</button>

@@ -11,13 +11,13 @@ export class HeaderComponent {
 
   isLoggedIn: boolean = true;
   userName?: string | null ;
+  isMenuOpen = false;
 
   constructor(private loginService: LoginService, 
     private router:Router) {}
 
   ngOnInit(): void {
     this.loginService.authState$?.subscribe((user) => {
-      console.log('user', user);
       if (user) {
         
         this.isLoggedIn = true;
@@ -31,7 +31,6 @@ export class HeaderComponent {
       if (user) {
           this.loginService.getUserName().then((nombre) => {
               if (nombre) {
-                  console.log('nombre: ', nombre);
                   this.userName = nombre;
               }
           });
@@ -42,5 +41,9 @@ export class HeaderComponent {
   logout() {
     this.loginService.logout();
     this.router.navigate(['/notes']);
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

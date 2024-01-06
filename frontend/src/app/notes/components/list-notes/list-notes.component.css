@@ -37,8 +37,24 @@
 .filters-btn{
   display: flex!important;
   margin-top: 10px;
+  
 }
 
 .col-md-12{
   width: auto!important;
+}
+
+.container{
+  width: auto!important;
+}
+
+.btn{
+  display: flex;
+}
+
+@media screen and (max-width: 750px) {
+  .btn{
+    flex-direction: column;
+    gap: 5px;
+  }
 }
