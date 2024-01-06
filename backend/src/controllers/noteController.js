@@ -90,6 +90,17 @@ module.exports = {
             res.json({error: 'Ocurrió un error al obtener las notas'})
         }
     },
+    getNotesByIdByStatus : async (req, res) => {
+        try {
+            const { id, status } = req.params;
+            const notes = await noteServices.getNotesByIdByStatus(id, status);
+            res.json(notes);
+        } catch (error) {
+            console.log(error);
+            res.json({error: 'Ocurrió un error al obtener las notas'})
+        }
+    },
+
     updateStatusNoteById : async (req, res) => {
         try {
             const { id } = req.params;

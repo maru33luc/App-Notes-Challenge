@@ -51,6 +51,20 @@ module.exports = {
             return { error: 'Ocurrió un error al obtener las notas' }
         }
     },
+    getNotesByIdByStatus : async (id, status) => {
+        try {
+            const notes = await Note.findAll({
+                where: {
+                    usuarioId: id,
+                    activa: status
+                }
+            });
+            return notes;
+        } catch (error) {
+            console.log(error);
+            return { error: 'Ocurrió un error al obtener las notas' }
+        }
+    },
     deleteNoteById : async (id) => {
         try {
             const noteToDelete = await Note.findByPk(id);

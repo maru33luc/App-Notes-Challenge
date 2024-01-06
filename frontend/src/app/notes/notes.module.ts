@@ -14,6 +14,8 @@ import { EditNoteComponent } from './components/edit-note/edit-note.component';
 import { ArchivoComponent } from './components/archive/archive.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArchivePageComponent } from './pages/archive-page/archive-page.component';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @NgModule({
   declarations: [ListNotesComponent, NewNoteComponent,
@@ -28,6 +30,6 @@ ArchivePageComponent],
     SharedModule,
     NgbModule
   ],
-  providers: [DatePipe]
+  providers: [DatePipe, CookieService]
 })
 export class NotesModule { }

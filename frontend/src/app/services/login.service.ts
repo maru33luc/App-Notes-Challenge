@@ -8,9 +8,15 @@ import axios from 'axios';
 })
 export class LoginService {
 
-  authState$: BehaviorSubject<any> | undefined = new BehaviorSubject(null);
+  authState$: BehaviorSubject<any> | undefined = new BehaviorSubject(null) ;
 
   constructor() {
+    // cargar el this.authState$ con el usuario logueado
+    this.isUserLoggedIn().then((user) => {
+      if (user) {
+        this.authState$?.next(user);
+      }
+    });
 
   }
 
@@ -101,13 +107,19 @@ export class LoginService {
     }
 }
 
-async isUserLoggedIn(): Promise<boolean> {
+async isUserLoggedIn(): Promise< User | null> {
   try {
-      const res = await axios.get(`http://localhost:3000/auth`, { withCredentials: true });
-      return !!res.data; // Verifica si hay datos en la respuesta
+      const res = await axios.get(`http://localhost:3000/users/auth`, { withCredentials: true });
+      if (res.status === 200) {
+          this.authState$?.next(res.data);
+          return res.data;
+      }
+      else {
+          return null;
+      }
   } catch (e) {
       console.log(e);
-      return false;
+      return null;
   }
 }
 

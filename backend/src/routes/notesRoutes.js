@@ -1,6 +1,7 @@
 const express = require('express');
 const { getAllNotes, createNote, updateNoteById, 
-    deleteNoteById, getNoteById, getNotesByStatus,updateStatusNoteById,
+    deleteNoteById, getNoteById, getNotesByStatus,
+    updateStatusNoteById, getNotesByIdByStatus
     } = require('../controllers/noteController');
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router.put('/:id', updateNoteById);
 router.patch('/:id', updateStatusNoteById);
 router.delete('/:id', deleteNoteById);
 router.get ('/status/:status', getNotesByStatus);
+router.get ('/:id/status/:status', getNotesByIdByStatus);
 
 
 

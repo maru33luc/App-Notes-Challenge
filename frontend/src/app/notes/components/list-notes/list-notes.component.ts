@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Note } from '../../../interfaces/Note';
 import { NoteService } from '../../../services/note.service';
 import { CategoryService } from '../../../services/category.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-list-notes',
@@ -18,7 +19,12 @@ export class ListNotesComponent {
   orderDirection?: string;
   
   constructor(private noteService: NoteService,
-    private categoryService: CategoryService) { }
+    private categoryService: CategoryService, private cookieS: CookieService) { 
+      const cookie = this.cookieS.get('user');
+      const all = this.cookieS.getAll();
+      console.log(cookie);
+      console.log('all', all);
+    }
     
   async ngOnInit(): Promise<void> {
     this.noteService.$notes.subscribe(async notes => {

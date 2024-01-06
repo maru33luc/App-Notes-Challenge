@@ -55,7 +55,7 @@ module.exports = {
             const user = await userServices.getUserByEmailAndPassword(correo, contraseñaHash);
             req.session.user = user;
             req.session.auth = true;
-            res.cookie('user', user, { httpOnly: true, secure: true });
+            res.cookie('user', user, { httpOnly: false, secure: false });
             res.json(user);
         }catch(error){
             console.log(error);
@@ -63,6 +63,7 @@ module.exports = {
         }
     },
     isLoggedIn : (req, res) => {
+        console.log('req.session', req.session);
         if(req.session.user){
             console.log('req.session.user', req.session.user);
             res.json(req.session.user);

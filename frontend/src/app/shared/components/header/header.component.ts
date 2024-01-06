@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
 
-  isLoggedIn: boolean = true;
+  isLoggedIn?: boolean;
   userName?: string | null ;
   isMenuOpen = false;
 
@@ -17,29 +17,23 @@ export class HeaderComponent {
     private router:Router) {}
 
   ngOnInit(): void {
-    this.loginService.authState$?.subscribe((user) => {
-      if (user) {
-        
+    
+   this.loginService.authState$?.subscribe((user) => {
+      if (user && user.nombre) {
         this.isLoggedIn = true;
-        
+        this.userName = user.nombre;
       } else {
         this.isLoggedIn = false;
-        this.userName = '';
+        this.userName = null;
       }
     });
-    this.loginService.authState$?.subscribe((user) => {
-      if (user) {
-          this.loginService.getUserName().then((nombre) => {
-              if (nombre) {
-                  this.userName = nombre;
-              }
-          });
-      }
-  });
+   
   }
 
   logout() {
     this.loginService.logout();
+    this.isLoggedIn = false;
+    this.loginService.authState$?.next(null);
     this.router.navigate(['/notes']);
   }
 
