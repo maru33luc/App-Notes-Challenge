@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Note } from '../interfaces/Note';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { environments } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class NoteService {
 
   $notes: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
   $inactiveNotes: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
+  notesUrl = environments.urlBackNotes;
 
   constructor(private cookieS: CookieService) {
     this.getActiveNotes().then(notes => {
@@ -26,7 +28,7 @@ export class NoteService {
 
   async getNotes(): Promise<Note[] | undefined> {
     try {
-      const res = await fetch('http://localhost:3000/notes');
+      const res = await fetch(this.notesUrl);
       return await res.json();
     } catch (err) {
       console.log(err);
@@ -50,7 +52,7 @@ export class NoteService {
             const parsedJson = JSON.parse(jsonSubstring);
             const userId = parsedJson.id
 
-            const res = await fetch(`http://localhost:3000/notes/${userId}/status/1`);
+            const res = await fetch(`${this.notesUrl}/${userId}/status/1`);
             const response = await res.json();
             if(response){
               this.$notes.next(response);
@@ -76,7 +78,7 @@ export class NoteService {
   async getInactiveNotes(): Promise<Note[] | undefined> {
     try {
       const userId = 3
-      const res = await fetch(`http://localhost:3000/notes/${userId}/status/0`);
+      const res = await fetch(`${this.notesUrl}/${userId}/status/0`);
       return await res.json();
     } catch (err) {
       console.log(err);
@@ -86,7 +88,7 @@ export class NoteService {
 
   async createNote(note: Note): Promise<void> {
     try {
-      await fetch(`http://localhost:3000/notes`, {
+      await fetch(`${this.notesUrl}`, {
         method: 'POST',
         body: JSON.stringify(note),
         headers: {
@@ -100,7 +102,7 @@ export class NoteService {
 
   async deleteNotes(id: number | undefined): Promise<void> {
     try {
-      await fetch(`http://localhost:3000/notes/${id}`, {
+      await fetch(`${this.notesUrl}/${id}`, {
         method: 'DELETE',
       });
     } catch (err) {
@@ -110,7 +112,7 @@ export class NoteService {
 
   async updateNote(note: Note, id: number): Promise<void> {
     try {
-      await fetch(`http://localhost:3000/notes/${id}`, {
+      await fetch(`${this.notesUrl}/${id}`, {
         method: 'PUT',
         body: JSON.stringify(note),
         headers: {
@@ -124,7 +126,7 @@ export class NoteService {
 
   async getNoteById(id: number): Promise<Note | undefined> {
     try {
-      const res = await fetch(`http://localhost:3000/notes/${id}`);
+      const res = await fetch(`${this.notesUrl}/${id}`);
       return await res.json();
     } catch (err) {
       console.log(err);
@@ -134,7 +136,7 @@ export class NoteService {
 
   async fileNote(id: number | undefined): Promise<void> {
     try {
-      await fetch(`http://localhost:3000/notes/${id}`, {
+      await fetch(`${this.notesUrl}/${id}`, {
         method: 'PATCH',
         body: JSON.stringify({
           activa: 0,
@@ -150,7 +152,7 @@ export class NoteService {
 
   async restoreNoteById(id: number | undefined): Promise<void> {
     try {
-      await fetch(`http://localhost:3000/notes/${id}`, {
+      await fetch(`${this.notesUrl}/${id}`, {
         method: 'PATCH',
         body: JSON.stringify({
           activa: 1,

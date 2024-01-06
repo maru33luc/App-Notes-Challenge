@@ -32,15 +32,11 @@ module.exports = {
     },
     updateUser: async (id, updatedUser) => {
         try {
-            // Obtener el usuario actual
             const existingUser = await UserModel.findByPk(id);
 
-            // Verificar si se proporciona una nueva contraseña y si es diferente de la contraseña actual
             if (updatedUser.password && !bcrypt.compareSync(updatedUser.password, existingUser.password)) {
-                // Generar un nuevo hash solo si la contraseña se ha cambiado
                 updatedUser.password = bcrypt.hashSync(updatedUser.password, 10);
             }else {
-                // Si la contraseña no se ha cambiado, eliminarla del objeto updatedUser
                 delete updatedUser.password;
             }
 
@@ -49,7 +45,6 @@ module.exports = {
                     id: id,
                 },
             });
-
             return { success: 'Se ha modificado el usuario' };
         } catch (error) {
             console.log(error);
@@ -91,10 +86,8 @@ module.exports = {
             });
 
             if (user && bcrypt.compareSync(password, user.contraseñaHash)) {
-                // Contraseña válida
                 return user;
             } else {
-                // Credenciales inválidas
                 return null;
             }
         } catch (error) {

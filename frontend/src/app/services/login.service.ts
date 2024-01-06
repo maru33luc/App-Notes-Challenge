@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../interfaces/User';
 import axios from 'axios';
+import { environments } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import axios from 'axios';
 export class LoginService {
 
   authState$: BehaviorSubject<any> | undefined = new BehaviorSubject(null) ;
+  userUrl = environments.urlBackUsers;
 
   constructor() {
     this.isUserLoggedIn().then((user) => {
@@ -20,7 +22,7 @@ export class LoginService {
   }
 
   async getUsers() {
-    const res = await axios.get('http://localhost:3000/users');
+    const res = await axios.get(this.userUrl);
     return res.data;
   }
 
@@ -30,7 +32,7 @@ export class LoginService {
         correo: email,
         contraseñaHash: password
       }
-      const user = await axios.post('http://localhost:3000/users/auth', userCredential, { withCredentials: true });
+      const user = await axios.post(`${this.userUrl}/auth`, userCredential, { withCredentials: true });
 
       if (user) {
         this.authState$?.next(user.data);
@@ -59,7 +61,7 @@ export class LoginService {
         }
       }
       try {
-        const userCredential = await axios.post('http://localhost:3000/users', user);
+        const userCredential = await axios.post(`${this.userUrl}/users`, user);
         alert('Usuario registrado con éxito');
       } catch (error) {
         alert('No se pudo registrar el usuario');
@@ -71,7 +73,7 @@ export class LoginService {
 
   async logout() {
     try {
-      const res = await axios.post('http://localhost:3000/users/logout', {}, { withCredentials: true });
+      const res = await axios.post(`${this.userUrl}/logout`, {}, { withCredentials: true });
       this.authState$?.next(null);
       window.location.href = '/notes';
       if(res){
@@ -87,7 +89,7 @@ export class LoginService {
 
   async getDataActualUser() {
     try {
-      const res = await axios.get('http://localhost:3000/users/auth', { withCredentials: true });
+      const res = await axios.get(`${this.userUrl}/auth`, { withCredentials: true });
       if(res){
         return res.data;
       }
@@ -107,7 +109,7 @@ export class LoginService {
 
 async isUserLoggedIn(): Promise< User | null> {
   try {
-      const res = await axios.get(`http://localhost:3000/users/auth`, { withCredentials: true });
+      const res = await axios.get(`${this.userUrl}/auth`, { withCredentials: true });
       if (res.status === 200) {
           this.authState$?.next(res.data);
           return res.data;

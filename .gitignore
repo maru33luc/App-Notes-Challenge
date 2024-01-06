@@ -17,4 +17,8 @@ backend/*.log
 .vscode/
 
 # Configuración local
-.env
+/backend/.env
+
+#Environments
+/environments/
+

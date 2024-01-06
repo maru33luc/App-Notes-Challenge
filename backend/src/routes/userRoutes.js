@@ -6,15 +6,15 @@ const { getAllUsers, getUserById, addUser, updateUser,
 
 router.get ('/', getAllUsers);
 
-router.post ('/auth', authUser); // login
+router.post ('/auth', authUser); 
 
-router.get ('/auth', isLoggedIn); // check if logged in
+router.get ('/auth', isLoggedIn); 
 
 router.post ('/logout', logout);
 
 router.get ('/:id', getUserById);
 
-router.post ('/',addUser); // register
+router.post ('/',addUser); 
 
 router.put ('/:id', updateUser);
 

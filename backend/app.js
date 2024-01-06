@@ -13,7 +13,7 @@ const userRoutes = require('./src/routes/userRoutes');
 
 app.use (express.json());   
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Parse Cookie header and populate req.cookies with an object keyed by the cookie names. Optionally you may enable signed cookie support by passing a secret string, which assigns req.secret so it may be used by other middleware.
+app.use(cookieParser());
 
 app.use(cors({
     origin: 'http://localhost:4200',

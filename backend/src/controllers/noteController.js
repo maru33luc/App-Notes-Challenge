@@ -93,10 +93,7 @@ module.exports = {
     getNotesByIdByStatus : async (req, res) => {
         try {
             const { id, status } = req.params;
-            console.log('id', id);
-            console.log('status', status);
             const notes = await noteServices.getNotesByIdByStatus(id, status);
-            console.log('notes', notes);
             res.json(notes);
         } catch (error) {
             console.log(error);

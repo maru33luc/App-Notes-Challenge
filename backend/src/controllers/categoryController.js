@@ -17,7 +17,6 @@ module.exports = {
                 nombre,
                 descripcion
             });
-            console.log('category', category);
             res.json(category);
         } catch (error) {
             console.log(error);

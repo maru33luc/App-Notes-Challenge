@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Category } from '../interfaces/Category';
+import { environments } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
+  categoryUrl = environments.urlBackCategories
   constructor() { }
 
   async getCategoryName(id: number | undefined): Promise<string | undefined> {
     try{
-      const res = await fetch(`http://localhost:3000/categories/${id}`);
+      const res = await fetch(`${this.categoryUrl}/${id}`);
       const data = await res.json();
       return data.nombre;
     }catch(err){
@@ -21,7 +23,7 @@ export class CategoryService {
 
   async getCategories () : Promise<any[]> {
     try{
-      const res = await fetch(`http://localhost:3000/categories`);
+      const res = await fetch(`${this.categoryUrl}`);
       const data = await res.json();
       return data;
     }catch(err){
@@ -32,7 +34,7 @@ export class CategoryService {
 
   async deleteCategory(id: number | undefined) {
     try{
-      const res = await fetch(`http://localhost:3000/categories/${id}`, {
+      const res = await fetch(`${this.categoryUrl}/${id}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -45,7 +47,7 @@ export class CategoryService {
 
   async createCategory(category: Category) {
     try{
-      const res = await fetch(`http://localhost:3000/categories`, {
+      const res = await fetch(`${this.categoryUrl}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -62,7 +64,7 @@ export class CategoryService {
 
   async getCategoryById(id: number | undefined) {
     try{
-      const res = await fetch(`http://localhost:3000/categories/${id}`);
+      const res = await fetch(`${this.categoryUrl}/${id}`);
       const data = await res.json();
       return data;
     }catch(err){
@@ -73,7 +75,7 @@ export class CategoryService {
 
   async updateCategory(category: Category, id: number | undefined) {
     try{
-      const res = await fetch(`http://localhost:3000/categories/${id}`, {
+      const res = await fetch(`${this.categoryUrl}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
