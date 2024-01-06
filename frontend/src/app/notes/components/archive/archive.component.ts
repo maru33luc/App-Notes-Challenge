@@ -18,24 +18,29 @@ export class ArchivoComponent implements OnInit {
   constructor(private noteService: NoteService, private categoryService: CategoryService) {}
 
   ngOnInit() {
-    this.getArchivedNotes();
+    this.noteService.$inactiveNotes.subscribe(async notes => {
+      this.archivedNotes = notes;
+      if (this.archivedNotes) {
+        for (let note of this.archivedNotes) {
+          note.categoria = await this.categoryService.getCategoryName(note.categoriaId);
+        }
+      }
+    });
   }
 
   async getArchivedNotes() {
     const notes = await this.noteService.getInactiveNotes();
-    for ( let note of notes? notes: []) {
-        const res = await this.categoryService.getCategoryName(note.categoriaId);
-        if(res){
-          note.categoria = res;
-        }
+    if(notes){
+      for ( let note of notes) {
+        note.categoria = await this.categoryService.getCategoryName(note.categoriaId);
+      }
     }
+    
     this.archivedNotes = notes || []; 
   }
 
   filterArchivedNotes() {
     if (this.startDate && this.endDate) {
-      console.log('startDate', this.startDate);
-      console.log('endDate', this.endDate);
       this.archivedNotes = this.archivedNotes.filter(note =>
         (note.createdAt && new Date(note.createdAt) >= new Date(this.startDate!)) &&
         (note.createdAt && new Date(note.createdAt) <= new Date(this.endDate!))
@@ -44,13 +49,22 @@ export class ArchivoComponent implements OnInit {
   }
 
   restoreNote(noteId: number | undefined) {
-    // Lógica para restaurar la nota según su ID
-    console.log(`Restaurar nota con ID: ${noteId}`);
+    if (noteId) {
+      this.noteService.restoreNoteById(noteId);
+      window.location.reload();
+    }
   }
 
   applyFilter() {
     // Filtrar las notas archivadas según el título
     this.archivedNotes = this.archivedNotes.filter(note => note.title.toLowerCase().includes(this.searchTitle.toLowerCase()));
     this.filterArchivedNotes();
+  }
+
+  clearFilters() {
+    this.searchTitle = '';
+    this.startDate = undefined;
+    this.endDate = undefined;
+    this.getArchivedNotes();
   }
 }

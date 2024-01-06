@@ -34,14 +34,10 @@ export class ListNotesComponent {
 
   filterNotesByDates() {
     if (this.startDate || this.endDate) {
-      console.log('startDate', this.startDate);
-      console.log('endDate', this.endDate);
-      console.log('this.notes', this.notes);
       this.filteredNotes = this.filteredNotes?.filter(note =>
         (note.createdAt && new Date(note.createdAt) >= new Date(this.startDate!)) &&
         (note.createdAt && new Date(note.createdAt) <= new Date(this.endDate!))
       );
-      console.log('this.notes post filter', this.notes);
     }
   }
 

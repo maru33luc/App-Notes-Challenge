@@ -8,11 +8,17 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class NoteService {
 
   $notes: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
+  $inactiveNotes: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
 
   constructor() {
     this.getActiveNotes().then(notes => {
       if (notes) {
         this.$notes.next(notes);
+      }
+    });
+    this.getInactiveNotes().then(notes => {
+      if (notes) {
+        this.$inactiveNotes.next(notes);
       }
     });
   }
@@ -101,6 +107,22 @@ export class NoteService {
         method: 'PATCH',
         body: JSON.stringify({
           activa: 0,
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async restoreNoteById(id: number | undefined): Promise<void> {
+    try {
+      await fetch(`http://localhost:3000/notes/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          activa: 1,
         }),
         headers: {
           'Content-Type': 'application/json'

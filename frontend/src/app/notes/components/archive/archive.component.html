@@ -12,26 +12,31 @@
 
         <div class="col-md-4">
             <div class="form-group">
-              <label for="startDate">Fecha de Creación Desde</label>
-              <input id="startDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
-                [(ngModel)]="startDate" >
-              
-            </div>
-          </div>
-          
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="endDate">Fecha de Creación Hasta</label>
-              <input id="endDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
-                [(ngModel)]="endDate">
-              
-            </div>
-          </div>
+                <label for="startDate">Fecha de Creación Desde</label>
+                <input id="startDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
+                    [(ngModel)]="startDate">
 
-        <!-- boton de aplicar filtro -->
-        <div class="col-md-12">
-            <button class="btn btn-primary" (click)="applyFilter()">Aplicar Filtro</button>
             </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="endDate">Fecha de Creación Hasta</label>
+                <input id="endDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
+                    [(ngModel)]="endDate">
+
+            </div>
+        </div>
+
+        <div class="filters-btn">
+            <div class="col-md-12">
+              <button class="btn btn-secondary" (click)="applyFilter()">Aplicar Filtro</button>
+            </div>
+      
+            <div class="col-md-12">
+              <button class="btn btn-primary" (click)="clearFilters()">Limpiar Filtro</button>
+            </div>
+          </div>
     </div>
 
     <table class="table table-striped mt-3">
@@ -45,8 +50,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr
-                *ngFor="let archivedNote of archivedNotes">
+            <tr *ngFor="let archivedNote of archivedNotes">
                 <td>{{ archivedNote.title }}</td>
                 <td>{{ archivedNote.content }}</td>
                 <td>{{ archivedNote.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>

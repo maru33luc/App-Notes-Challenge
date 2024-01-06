@@ -1,0 +1,12 @@
+.filters-btn{
+    display: flex!important;
+    margin-top: 10px;
+  }
+  
+  .col-md-12{
+    width: auto!important;
+  }
+
+  .btn-primary, .btn-danger, .btn-dark, .btn-secondary  {
+    margin-right: 5px; 
+  }
