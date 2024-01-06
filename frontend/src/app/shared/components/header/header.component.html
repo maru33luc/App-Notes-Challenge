@@ -2,7 +2,6 @@
   <div class="container">
     <a class="navbar-brand" [routerLink]="['/notes']">NotasApp</a>
 
-    <!-- Botón de hamburguesa para pantallas pequeñas -->
     <button class="navbar-toggler" type="button" (click)="toggleMenu()" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -11,7 +10,7 @@
     <div class="collapse navbar-collapse justify-content-end" [class.show]="isMenuOpen" id="navbarNav">
       <ul class="navbar-nav">
         <ng-container *ngIf="isLoggedIn; else loginButtons">
-          <!-- Mostrar botones si el usuario está autenticado -->
+
           <li class="nav-item">
             <a class="nav-link" [routerLink]="['/notes']">Notas</a>
           </li>
@@ -30,7 +29,7 @@
         </ng-container>
 
         <ng-template #loginButtons>
-          <!-- Mostrar botones si el usuario no está autenticado -->
+          
           <li class="nav-item">
             <a class="nav-link" routerLink="/login/log">Login</a>
           </li>

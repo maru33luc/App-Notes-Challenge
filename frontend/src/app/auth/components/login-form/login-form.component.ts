@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NoteService } from '../../../services/note.service';
 
 @Component({
   selector: 'app-login-form',
@@ -10,24 +11,28 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginFormComponent {
 
-  constructor(private router: Router, 
-    private loginService:LoginService,
-    private formBuilder:FormBuilder) { }
+  constructor(private router: Router,
+    private loginService: LoginService,
+    private formBuilder: FormBuilder,
+    private noteService: NoteService) { }
 
   loginForm: FormGroup = this.formBuilder.group({
-    correo: ['',[Validators.required, Validators.email]],
-    contraseñaHash: ['',[Validators.required]]
+    correo: ['', [Validators.required, Validators.email]],
+    contraseñaHash: ['', [Validators.required]]
   });
 
-  login(){
-    if(this.loginForm.invalid){
+  login() {
+    if (this.loginForm.invalid) {
       return;
-    }else{
-      try{
+    } else {
+      try {
         this.loginService.login(this.loginForm.value.correo, this.loginForm.value.contraseñaHash);
-        console.log('usuario logueado con exito' );
-        this.router.navigate(['/notes']);
-      }catch(e){
+        this.noteService.getActiveNotes();
+        setTimeout(() => {
+          this.router.navigate(['/notes']);
+        }, 500);
+
+      } catch (e) {
         console.log(e);
       }
     }

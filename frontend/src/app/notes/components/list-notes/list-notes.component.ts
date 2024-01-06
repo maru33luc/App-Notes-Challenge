@@ -3,6 +3,7 @@ import { Note } from '../../../interfaces/Note';
 import { NoteService } from '../../../services/note.service';
 import { CategoryService } from '../../../services/category.service';
 import { CookieService } from 'ngx-cookie-service';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-list-notes',
@@ -10,30 +11,34 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrl: './list-notes.component.css'
 })
 export class ListNotesComponent {
-  filteredNotes : Note[] | undefined = [];
-  notes : Note[] | undefined = [];
-  searchTitle: string = ''; // Para filtrar por título
+  filteredNotes: Note[] | undefined = [];
+  notes: Note[] | undefined = [];
+  searchTitle: string = ''; 
   startDate: Date | undefined;
   endDate: Date | undefined;
-  order?: string ;	
+  order?: string;
   orderDirection?: string;
-  
+  loading: boolean = false;
+
   constructor(private noteService: NoteService,
-    private categoryService: CategoryService, private cookieS: CookieService) { 
-      const cookie = this.cookieS.get('user');
-      const all = this.cookieS.getAll();
-      console.log(cookie);
-      console.log('all', all);
-    }
-    
-  async ngOnInit(): Promise<void> {
-    this.noteService.$notes.subscribe(async notes => {
-      this.notes = notes;
-      if (this.notes) {
-        for (let note of this.notes) {
-          note.categoria = await this.categoryService.getCategoryName(note.categoriaId);  
+    private categoryService: CategoryService, private cookieS: CookieService, private loginService: LoginService) {
+      
+      this.loginService.authState$?.subscribe((user) => {
+        if(user){
+          this.loading = true;
+        }else{
+          this.loading = false;
         }
-        this.filteredNotes = [...this.notes];
+      });
+
+    this.noteService.getActiveNotes().then(notes => {
+      if (notes) {
+        this.notes = notes;
+        this.filteredNotes = [...(this.notes ?? [])];
+        this.loading = true;
+        if (this.filteredNotes.length !== 0) {
+          
+        }
       }
     });
   }
@@ -52,36 +57,32 @@ export class ListNotesComponent {
   }
 
   applyOrderFilter() {
-      if(this.order === 'Titulo'){
-        // ordenar por titulo de forma asc
-        this.filteredNotes = this.filteredNotes?.sort((a, b) => {
-          if (a.title && b.title) {
-            return a.title.localeCompare(b.title);
-          }
-          return 0;
-        });
-      }else{
-        //ordenar por fecha de forma asc
-        this.filteredNotes = this.filteredNotes?.sort((a, b) => {
-          if (a.createdAt && b.createdAt) {
-            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-          }
-          return 0;
-        });
-      }
-  }
-
-  applyOrderDirectionFilter() {
-    if(this.orderDirection === 'asc'){
-      // ordenar por fechas de forma asc
+    if (this.order === 'Titulo') {
+      this.filteredNotes = this.filteredNotes?.sort((a, b) => {
+        if (a.title && b.title) {
+          return a.title.localeCompare(b.title);
+        }
+        return 0;
+      });
+    } else {
       this.filteredNotes = this.filteredNotes?.sort((a, b) => {
         if (a.createdAt && b.createdAt) {
           return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
         }
         return 0;
       });
-    }else if(this.orderDirection === 'desc'){
-      // ordenar por fechas de forma desc
+    }
+  }
+
+  applyOrderDirectionFilter() {
+    if (this.orderDirection === 'asc') {
+      this.filteredNotes = this.filteredNotes?.sort((a, b) => {
+        if (a.createdAt && b.createdAt) {
+          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        }
+        return 0;
+      });
+    } else if (this.orderDirection === 'desc') {
       this.filteredNotes = this.filteredNotes?.sort((a, b) => {
         if (a.createdAt && b.createdAt) {
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -99,26 +100,26 @@ export class ListNotesComponent {
   }
 
   deleteNote(id: number | undefined) {
-    try{
+    try {
       this.noteService.deleteNotes(id);
       window.location.reload();
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
   }
 
-  fileNote (id: number | undefined) {
-    try{
+  fileNote(id: number | undefined) {
+    try {
       this.noteService.fileNote(id);
       window.location.reload();
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
   }
 
-  async clearFilters () {
-    const res = await  this.noteService.getActiveNotes();
-    if(res){
+  async clearFilters() {
+    const res = await this.noteService.getActiveNotes();
+    if (res) {
       this.notes = res;
     }
     this.searchTitle = '';

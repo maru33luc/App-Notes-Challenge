@@ -72,22 +72,31 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let note of filteredNotes">
-        <td>{{ note.title }}</td>
-        <td>{{ note.content }}</td>
-        <td>{{ note.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-        <td>{{ note.categoria }}</td>
-        <td class="btn">
+      <ng-container *ngIf="loading; else loadingContent">
+        <tr *ngFor="let note of filteredNotes">
+          <td>{{ note.title }}</td>
+          <td>{{ note.content }}</td>
+          <td>{{ note.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+          <td>{{ note.categoria }}</td>
+          <td class="btn">
+            <button class="btn btn-primary btn-sm" [routerLink]="'editar-nota/' + note.id">Editar</button>
+            <button class="btn btn-dark btn-sm" (click)="fileNote(note.id)">Archivar</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteNote(note.id)">Eliminar</button>
+          </td>
+        </tr>
 
-          <button class="btn btn-primary btn-sm" [routerLink]="'editar-nota/' + note.id">Editar</button>
-          <button class="btn btn-dark btn-sm" (click)="fileNote(note.id)">Archivar</button>
-          <button class="btn btn-danger btn-sm" (click)="deleteNote(note.id)">Eliminar</button>
+        <tr *ngIf="filteredNotes && filteredNotes.length === 0">
+          <td colspan="5">No hay notas</td>
+        </tr>
+      </ng-container>
+      <ng-template #loadingContent>
+        <tr>
+          <td colspan="5">
+            <img class="spinner" src="../../../../assets/img/spinner.svg" alt="Loading spinner">
+          </td>
+        </tr>
+      </ng-template>
 
-        </td>
-      </tr>
-      <tr *ngIf="notes && notes.length === 0">
-        <td colspan="5">No hay notas</td>
-      </tr>
     </tbody>
   </table>
 </div>

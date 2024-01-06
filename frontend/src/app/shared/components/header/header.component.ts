@@ -27,7 +27,6 @@ export class HeaderComponent {
         this.userName = null;
       }
     });
-   
   }
 
   logout() {

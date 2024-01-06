@@ -11,7 +11,6 @@ export class LoginService {
   authState$: BehaviorSubject<any> | undefined = new BehaviorSubject(null) ;
 
   constructor() {
-    // cargar el this.authState$ con el usuario logueado
     this.isUserLoggedIn().then((user) => {
       if (user) {
         this.authState$?.next(user);
@@ -68,7 +67,6 @@ export class LoginService {
     } catch (error) {
       alert('No se pudo obtener la lista de usuarios');
     }
-
   }
 
   async logout() {
@@ -122,9 +120,4 @@ async isUserLoggedIn(): Promise< User | null> {
       return null;
   }
 }
-
-
-
-
-
 }

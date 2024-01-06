@@ -63,10 +63,9 @@ module.exports = {
         }
     },
     isLoggedIn : (req, res) => {
-        console.log('req.session', req.session);
-        if(req.session.user){
-            console.log('req.session.user', req.session.user);
-            res.json(req.session.user);
+        if(req.cookies.user){
+            console.log('req.cookies.user', req.cookies.user);
+            res.json(req.cookies.user);
         }else{
             res.json({error: 'No autorizado'});
             console.log('No autorizado');

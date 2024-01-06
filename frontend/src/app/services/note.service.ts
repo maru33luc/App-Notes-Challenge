@@ -11,7 +11,7 @@ export class NoteService {
   $notes: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
   $inactiveNotes: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
 
-  constructor(private cookieS : CookieService) {
+  constructor(private cookieS: CookieService) {
     this.getActiveNotes().then(notes => {
       if (notes) {
         this.$notes.next(notes);
@@ -35,56 +35,47 @@ export class NoteService {
   }
 
   async getActiveNotes(): Promise<Note[] | undefined> {
+    const cookieContent = this.cookieS.get('user');
+    if (cookieContent) {
     try {
-      const cookieContent = this.cookieS.get('user');
-      
-      // Busca la posición de "j:" en la cadena
-    const jIndex = cookieContent.indexOf('j:');
+      const jIndex = cookieContent.indexOf('j:');
+      if (jIndex !== -1) {
 
-    // Verifica si se encontró "j:" en la cadena
-    if (jIndex !== -1) {
-      // Ajusta el índice para comenzar después de "j:" y encuentra la posición del siguiente comillas
-      const jsonString = cookieContent.substring(jIndex + 2);
-      const endIndex = jsonString.indexOf('"}');
+        const jsonString = cookieContent.substring(jIndex + 2);
+        const endIndex = jsonString.indexOf('"}');
 
-      // Verifica si se encontró '"}' en la cadena
-      if (endIndex !== -1) {
-        // Extrae la porción del JSON y analízala
-        const jsonSubstring = jsonString.substring(0, endIndex + 2);
-        try {
-          const parsedJson = JSON.parse(jsonSubstring);
+        if (endIndex !== -1) {
+          const jsonSubstring = jsonString.substring(0, endIndex + 2);
+          try {
+            const parsedJson = JSON.parse(jsonSubstring);
+            const userId = parsedJson.id
 
-          // Ahora `parsedJson` contiene el objeto JSON
-          console.log('Contenido JSON:', parsedJson);
-
-          const userId = parsedJson.id
-          console.log('userId', userId);
-      const res = await fetch(`http://localhost:3000/notes/${userId}/status/1`);
-      const response = await res.json();
-      console.log(response);
-      return response;
-        } catch (error) {
-          console.error('Error al analizar JSON de la cookie:', error);
+            const res = await fetch(`http://localhost:3000/notes/${userId}/status/1`);
+            const response = await res.json();
+            if(response){
+              this.$notes.next(response);
+            }
+            return response;
+          } catch (error) {
+            console.error('Error al analizar JSON de la cookie:', error);
+          }
+        } else {
+          console.error('No se encontró \'"}\' en la cadena de la cookie');
         }
       } else {
-        console.error('No se encontró \'"}\' en la cadena de la cookie');
+        console.error('No se encontró \'j:\' en la cadena de la cookie');
       }
-    } else {
-      console.error('No se encontró \'j:\' en la cadena de la cookie');
-    }
-  
 
-      
-      
     } catch (err) {
       console.log(err);
     }
     return undefined;
+    }return undefined;
   }
 
   async getInactiveNotes(): Promise<Note[] | undefined> {
     try {
-      const userId = 1
+      const userId = 3
       const res = await fetch(`http://localhost:3000/notes/${userId}/status/0`);
       return await res.json();
     } catch (err) {

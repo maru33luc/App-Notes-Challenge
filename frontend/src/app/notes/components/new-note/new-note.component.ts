@@ -19,6 +19,4 @@ export class NewNoteComponent {
     this.noteService.createNote(note);
     this.router.navigate(['/notes']);
   }
-
-  
 }

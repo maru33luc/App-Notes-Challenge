@@ -59,6 +59,7 @@ module.exports = {
                     activa: status
                 }
             });
+            console.log('notes', notes);
             return notes;
         } catch (error) {
             console.log(error);

@@ -25,7 +25,6 @@ export class RegisterFormComponent {
       return;
     }else{
       try{
-           console.log('this.registerForm.value', this.registerForm.value);
         const user: User = {
           nombre: this.registerForm.value.nombre,
           correo: this.registerForm.value.correo,

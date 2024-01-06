@@ -10,8 +10,8 @@ import { CategoryService } from '../../../services/category.service';
   styleUrls: ['./archive.component.css']
 })
 export class ArchivoComponent implements OnInit {
-  archivedNotes: Note[] = []; // Lista de notas archivadas
-  searchTitle: string = ''; // Para filtrar por título
+  archivedNotes: Note[] = []; 
+  searchTitle: string = ''; 
   startDate: Date | undefined;
   endDate: Date | undefined;
 
@@ -56,7 +56,6 @@ export class ArchivoComponent implements OnInit {
   }
 
   applyFilter() {
-    // Filtrar las notas archivadas según el título
     this.archivedNotes = this.archivedNotes.filter(note => note.title.toLowerCase().includes(this.searchTitle.toLowerCase()));
     this.filterArchivedNotes();
   }
