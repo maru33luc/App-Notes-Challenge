@@ -8,16 +8,10 @@ import axios from 'axios';
 })
 export class LoginService {
 
-  private authState$: BehaviorSubject<any> | undefined;
+  authState$: BehaviorSubject<any> | undefined = new BehaviorSubject(null);
 
   constructor() {
-    // Crea un observable personalizado para el estado de autenticación
-    this.authState$ = new BehaviorSubject<any>(null);
-  }
 
-  // Define un método para obtener el observable del estado de autenticación
-  authStateObservable(): Observable<User> | undefined {
-    return this.authState$;
   }
 
   async getUsers() {
@@ -31,7 +25,8 @@ export class LoginService {
         correo: email,
         contraseñaHash: password
       }
-      const user = await axios.post('http://localhost:3000/users/login', userCredential, { withCredentials: true });
+      console.log('userCredential', userCredential);
+      const user = await axios.post('http://localhost:3000/users/auth', userCredential, { withCredentials: true });
 
       if (user) {
         this.authState$?.next(user.data);
@@ -91,8 +86,9 @@ export class LoginService {
 
   async getDataActualUser() {
     try {
-      const res = await axios.get('http://localhost:3000/auth', { withCredentials: true });
+      const res = await axios.get('http://localhost:3000/users/auth', { withCredentials: true });
       if(res){
+        console.log('res.data', res.data);
         return res.data;
       }
       return null;

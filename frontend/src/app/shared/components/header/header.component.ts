@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { AuthService } from '../../../services/auth.service'; // Importa AuthService
+import { LoginService } from '../../../services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,17 +9,38 @@ import { AuthService } from '../../../services/auth.service'; // Importa AuthSer
 })
 export class HeaderComponent {
 
-  // isLoggedIn: boolean = this.authService.isLoggedIn();
   isLoggedIn: boolean = true;
-  // userName: string | null = this.authService.getUserName();
-  userName: string | null = 'user';
+  userName?: string | null ;
 
-  constructor(private authService: AuthService) {}
+  constructor(private loginService: LoginService, 
+    private router:Router) {}
+
+  ngOnInit(): void {
+    this.loginService.authState$?.subscribe((user) => {
+      console.log('user', user);
+      if (user) {
+        
+        this.isLoggedIn = true;
+        
+      } else {
+        this.isLoggedIn = false;
+        this.userName = '';
+      }
+    });
+    this.loginService.authState$?.subscribe((user) => {
+      if (user) {
+          this.loginService.getUserName().then((nombre) => {
+              if (nombre) {
+                  console.log('nombre: ', nombre);
+                  this.userName = nombre;
+              }
+          });
+      }
+  });
+  }
 
   logout() {
-    this.authService.logout();
-    // Actualiza el estado del usuario después de cerrar sesión
-    this.isLoggedIn = false;
-    this.userName = '';
+    this.loginService.logout();
+    this.router.navigate(['/notes']);
   }
 }

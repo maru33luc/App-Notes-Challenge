@@ -86,11 +86,11 @@ module.exports = {
         try {
             const user = await UserModel.findOne({
                 where: {
-                    email: email,
+                    correo: email,
                 },
             });
 
-            if (user && bcrypt.compareSync(password, user.password)) {
+            if (user && bcrypt.compareSync(password, user.contraseñaHash)) {
                 // Contraseña válida
                 return user;
             } else {

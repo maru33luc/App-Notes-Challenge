@@ -51,9 +51,9 @@ module.exports = {
     },
     authUser : async (req, res) => {
         try{
-            const email = req.body.email;
-            const password = req.body.password;
-            const user = await userServices.getUserByEmailAndPassword(email, password);
+            const correo = req.body.correo;
+            const contraseñaHash = req.body.contraseñaHash;
+            const user = await userServices.getUserByEmailAndPassword(correo, contraseñaHash);
         //    establecer una cookie de sesion
             req.session.user = user;
             req.session.auth = true;
@@ -66,9 +66,11 @@ module.exports = {
     },
     isLoggedIn : (req, res) => {
         if(req.session.user){
+            console.log('req.session.user', req.session.user);
             res.json(req.session.user);
         }else{
             res.json({error: 'No autorizado'});
+            console.log('No autorizado');
         }
     },
     logout : (req, res) => {
