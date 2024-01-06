@@ -21,19 +21,10 @@ This project is a web application that allows you to efficiently manage your not
 
 ## Technologies Used
 
-- Frontend: Angular v17
-- Backend: Node.js with Express
-- Database: MySQL with Sequelize ORM
-- Security: Bcrypt for secure password management
-- Server-Side Rendering: Implemented for faster and more efficient initial rendering.
+- **Frontend:** Angular v17, Bootstrap v5.3.2, Axios, NgBootstrap, RxJS, TypeScript
+- **Backend:** Node.js with Express, Bcrypt, Cookie-parser, Cors, Dotenv, Express-session, MySQL with Sequelize ORM
+- **Server-Side Rendering:** Implemented for faster initial rendering.
 
-## Project Execution
-
-Requirements
-- Node.js (vXX)
-- npm (vXX)
-- MySQL (vXX)
-...
 ## Running the Application
 
 1. Clone the repository: git clone https://github.com/your-username/your-repo.git
@@ -45,10 +36,20 @@ Requirements
 7. Start the backend: npm start
 The application is ready to be used!
 
-### Login Credentials (Development)
+## Configuration
 
-- Username: admin
-- Password: password
+### Backend Configuration
+
+1. Navigate to the backend folder: `cd backend`
+2. Create a new file named `.env` in the `backend` folder.
+3. Open the `.env` file and add the following variables, replacing the values with your own configuration:
+
+   ```env
+   DB_HOST=localhost
+   DB_USER=your_database_user
+   DB_PASSWORD=your_database_password
+   DB_NAME=notas_challenge
+   DB_PORT=3306
 
 ## Deployed Version
 Link to the deployed version on Heroku
