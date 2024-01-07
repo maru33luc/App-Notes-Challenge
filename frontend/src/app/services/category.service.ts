@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Category } from '../interfaces/Category';
 import { environments } from '../../environments/environments';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,15 @@ import { environments } from '../../environments/environments';
 export class CategoryService {
 
   categoryUrl = environments.urlBackCategories
-  constructor() { }
+  categories$: BehaviorSubject<any> | undefined = new BehaviorSubject(null);
+
+  constructor() {
+    this.getCategories().then((categories) => {
+      if (categories) {
+        this.categories$?.next(categories);
+      }
+    });
+   }
 
   async getCategoryName(id: number | undefined): Promise<string | undefined> {
     try{
@@ -55,7 +64,12 @@ export class CategoryService {
         body: JSON.stringify(category)
       });
       const data = await res.json();
-      return data;
+      if(data.id){
+        const categories = await this.getCategories();
+        this.categories$?.next(categories);
+        return data;
+      }
+      return undefined;
     }catch(err){
       console.log(err);
     }

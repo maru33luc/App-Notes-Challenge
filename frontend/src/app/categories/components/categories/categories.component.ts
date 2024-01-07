@@ -14,7 +14,9 @@ export class CategoryListComponent implements OnInit {
   constructor(private categoryService: CategoryService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadCategories();
+    this.categoryService.categories$?.subscribe((categories) => {
+      this.categories = categories;
+    });
   }
 
   async loadCategories(): Promise<void> {
