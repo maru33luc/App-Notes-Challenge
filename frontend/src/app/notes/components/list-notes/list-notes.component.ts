@@ -35,6 +35,13 @@ export class ListNotesComponent {
       if (notes) {
         this.notes = notes;
         this.filteredNotes = [...(this.notes ?? [])];
+        for(let note of this.filteredNotes){
+          this.categoryService.getCategoryName(note.categoriaId).then((category) => {
+            if(category){
+              note.categoria = category;
+            }
+          });
+        }
         this.loading = true;
         if (this.filteredNotes.length !== 0) {
           
