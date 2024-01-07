@@ -1,66 +1,64 @@
 @echo off
 
+REM Set MYSQL_PWD environment variable
+set MYSQL_PWD=Maru29luc
+
 REM Script to set up and run the application
 
 REM Database configuration
-# Create the database 
-mysql -u your_mysql_user -p your_mysql_password -e "CREATE DATABASE IF NOT EXISTS notas_challenge;"
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS notas_challenge;"
 
-REM Create users table
-mysql -u your_mysql_user -p your_mysql_password notas_challenge -e "CREATE TABLE IF NOT EXISTS usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    correo VARCHAR(255) NOT NULL UNIQUE,
-    contraseñaHash VARCHAR(255) NOT NULL,
-    createdAt DATETIME NOT NULL,
-    updatedAt DATETIME NOT NULL
-);"
+REM Create SQL file
+echo CREATE TABLE IF NOT EXISTS usuarios ( > create_tables.sql
+echo    id INT AUTO_INCREMENT PRIMARY KEY, >> create_tables.sql
+echo    nombre VARCHAR(255) NOT NULL, >> create_tables.sql
+echo    correo VARCHAR(255) NOT NULL UNIQUE, >> create_tables.sql
+echo    contrasenaHash VARCHAR(255) NOT NULL, >> create_tables.sql
+echo    createdAt DATETIME NOT NULL, >> create_tables.sql
+echo    updatedAt DATETIME NOT NULL >> create_tables.sql
+echo ); >> create_tables.sql
 
-REM Create categorias table
-mysql -u your_mysql_user -p your_mysql_password notas_challenge -e "CREATE TABLE IF NOT EXISTS categorias (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    descripcion VARCHAR(255),
-    createdAt DATETIME NOT NULL,
-    updatedAt DATETIME NOT NULL
-);"
+echo CREATE TABLE IF NOT EXISTS categorias ( >> create_tables.sql
+echo    id INT AUTO_INCREMENT PRIMARY KEY, >> create_tables.sql
+echo    nombre VARCHAR(255) NOT NULL, >> create_tables.sql
+echo    descripcion VARCHAR(255), >> create_tables.sql
+echo    createdAt DATETIME NOT NULL, >> create_tables.sql
+echo    updatedAt DATETIME NOT NULL >> create_tables.sql
+echo ); >> create_tables.sql
 
-REM Create notas table
-mysql -u your_mysql_user -p your_mysql_password notas_challenge -e "CREATE TABLE IF NOT EXISTS notas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    usuarioId INT NOT NULL,
-    createdAt DATETIME NOT NULL,
-    updatedAt DATETIME NOT NULL,
-    categoriaId INT,
-    activa BOOLEAN NOT NULL DEFAULT TRUE,
-    FOREIGN KEY (usuarioId) REFERENCES usuarios(id),
-    FOREIGN KEY (categoriaId) REFERENCES categorias(id)
-);"
+echo CREATE TABLE IF NOT EXISTS notas ( >> create_tables.sql
+echo    id INT AUTO_INCREMENT PRIMARY KEY, >> create_tables.sql
+echo    title VARCHAR(255) NOT NULL, >> create_tables.sql
+echo    content TEXT NOT NULL, >> create_tables.sql
+echo    usuarioId INT NOT NULL, >> create_tables.sql
+echo    createdAt DATETIME NOT NULL, >> create_tables.sql
+echo    updatedAt DATETIME NOT NULL, >> create_tables.sql
+echo    categoriaId INT, >> create_tables.sql
+echo    activa BOOLEAN NOT NULL DEFAULT TRUE, >> create_tables.sql
+echo    FOREIGN KEY (usuarioId) REFERENCES usuarios(id), >> create_tables.sql
+echo    FOREIGN KEY (categoriaId) REFERENCES categorias(id) >> create_tables.sql
+echo ); >> create_tables.sql
+
+REM Execute SQL file
+mysql -u root notas_challenge < create_tables.sql
 
 REM Backend configuration
 echo Installing backend dependencies...
 cd backend
 npm install
 
-REM Run Sequelize migrations
-sequelize db:migrate
+REM Start the backend
+echo Starting the backend server...
+start /B npm start
+
+REM Wait for a few seconds to ensure the backend is up and running
+timeout /t 5
 
 REM Frontend configuration
 echo Installing frontend dependencies...
 cd ../frontend
 npm install
 
-REM Start the backend
-echo Starting the backend server...
-cd ../backend
-start npm start
-
-REM Wait for a few seconds to ensure the backend is up and running
-timeout /t 5
-
 REM Start the frontend
 echo Starting the frontend application...
-cd ../frontend
-start npm start
+npm start

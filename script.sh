@@ -1,32 +1,33 @@
 #!/bin/bash
 
+# Set MYSQL_PWD environment variable
+export MYSQL_PWD=Maru29luc
+
 # Script to set up and run the application
 
 # Database configuration
-# Create the database 
-mysql -u your_mysql_user -p'your_mysql_password' -e "CREATE DATABASE IF NOT EXISTS notas_challenge;"
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS notas_challenge;"
 
-# Create users table
-mysql -u your_mysql_user -p'your_mysql_password' notas_challenge -e "CREATE TABLE IF NOT EXISTS usuarios (
+# Create SQL file
+cat <<EOF > create_tables.sql
+CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     correo VARCHAR(255) NOT NULL UNIQUE,
-    contraseñaHash VARCHAR(255) NOT NULL,
+    contrasenaHash VARCHAR(255) NOT NULL,
     createdAt DATETIME NOT NULL,
     updatedAt DATETIME NOT NULL
-);"
+);
 
-# Create categorias table
-mysql -u your_mysql_user -p'your_mysql_password' notas_challenge -e "CREATE TABLE IF NOT EXISTS categorias (
+CREATE TABLE IF NOT EXISTS categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     descripcion VARCHAR(255),
     createdAt DATETIME NOT NULL,
     updatedAt DATETIME NOT NULL
-);"
+);
 
-# Create notas table
-mysql -u your_mysql_user -p'your_mysql_password' notas_challenge -e "CREATE TABLE IF NOT EXISTS notas (
+CREATE TABLE IF NOT EXISTS notas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
@@ -37,30 +38,29 @@ mysql -u your_mysql_user -p'your_mysql_password' notas_challenge -e "CREATE TABL
     activa BOOLEAN NOT NULL DEFAULT TRUE,
     FOREIGN KEY (usuarioId) REFERENCES usuarios(id),
     FOREIGN KEY (categoriaId) REFERENCES categorias(id)
-);"
+);
+EOF
+
+# Execute SQL file
+mysql -u root notas_challenge < create_tables.sql
 
 # Backend configuration
 echo "Installing backend dependencies..."
 cd backend || exit
 npm install
 
-# Run Sequelize migrations
-npx sequelize-cli db:migrate
+# Start the backend
+echo "Starting the backend server..."
+npm start &
+
+# Wait for a few seconds to ensure the backend is up and running
+sleep 5
 
 # Frontend configuration
 echo "Installing frontend dependencies..."
 cd ../frontend || exit
 npm install
 
-# Start the backend
-echo "Starting the backend server..."
-cd ../backend || exit
-npm start &
-
-# Wait for a few seconds to ensure the backend is up and running
-sleep 5
-
 # Start the frontend
 echo "Starting the frontend application..."
-cd ../frontend || exit
-npm start &
+npm start
