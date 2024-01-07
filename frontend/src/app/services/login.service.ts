@@ -61,7 +61,7 @@ export class LoginService {
         }
       }
       try {
-        const userCredential = await axios.post(`${this.userUrl}/users`, user);
+        const userCredential = await axios.post(`${this.userUrl}`, user);
         alert('Usuario registrado con éxito');
       } catch (error) {
         alert('No se pudo registrar el usuario');
