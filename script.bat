@@ -7,7 +7,7 @@ REM Database configuration
 mysql -u your_mysql_user -p your_mysql_password -e "CREATE DATABASE IF NOT EXISTS notas_challenge;"
 
 REM Create users table
-mysql -u your_mysql_user -p your_mysql_password notes_challenge -e "CREATE TABLE IF NOT EXISTS usuarios (
+mysql -u your_mysql_user -p your_mysql_password notas_challenge -e "CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     correo VARCHAR(255) NOT NULL UNIQUE,
@@ -17,7 +17,7 @@ mysql -u your_mysql_user -p your_mysql_password notes_challenge -e "CREATE TABLE
 );"
 
 REM Create categorias table
-mysql -u your_mysql_user -p your_mysql_password notes_challenge -e "CREATE TABLE IF NOT EXISTS categorias (
+mysql -u your_mysql_user -p your_mysql_password notas_challenge -e "CREATE TABLE IF NOT EXISTS categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     descripcion VARCHAR(255),
@@ -26,7 +26,7 @@ mysql -u your_mysql_user -p your_mysql_password notes_challenge -e "CREATE TABLE
 );"
 
 REM Create notas table
-mysql -u your_mysql_user -p your_mysql_password notes_challenge -e "CREATE TABLE IF NOT EXISTS notas (
+mysql -u your_mysql_user -p your_mysql_password notas_challenge -e "CREATE TABLE IF NOT EXISTS notas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
