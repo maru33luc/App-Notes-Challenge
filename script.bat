@@ -4,7 +4,7 @@ REM Script to set up and run the application
 
 REM Database configuration
 # Create the database 
-mysql -u your_mysql_user -p your_mysql_password -e "CREATE DATABASE IF NOT EXISTS notes_challenge;"
+mysql -u your_mysql_user -p your_mysql_password -e "CREATE DATABASE IF NOT EXISTS notas_challenge;"
 
 REM Create users table
 mysql -u your_mysql_user -p your_mysql_password notes_challenge -e "CREATE TABLE IF NOT EXISTS usuarios (
