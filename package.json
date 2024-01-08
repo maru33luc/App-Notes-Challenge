@@ -1,0 +1,19 @@
+{
+  "name": "challenge",
+  "version": "1.0.0",
+  "description": "This project is a web application that allows you to efficiently manage your notes. You can create, edit, archive, and filter your notes according to your needs. The implementation is divided into two phases: note creation and the application of tags and filtering.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "cd frontend && npm install && cd ../backend && npm install",
+    "build": "cd frontend && npm run build",
+    "start": "node backend/app.js"
+
+    
+
+    
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
