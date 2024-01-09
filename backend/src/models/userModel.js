@@ -28,6 +28,9 @@ const User = db.define('usuarios', {
     type: DataTypes.DATE,
     allowNull: false
   }
-}, { timestamps: true });
+}, {  timestamps: true,
+  schema: 'railway'
+
+    });
 
 module.exports = User;

@@ -40,7 +40,10 @@ const Note = db.define('notas', {
         defaultValue: true
     }
     
-}, { timestamps: true });
+}, { imestamps: true,
+    schema: 'railway'
+
+});
 
 Note.belongsTo(User, { foreignKey: 'usuarioId' });
 Note.belongsTo(Category, { foreignKey: 'categoriaId' });

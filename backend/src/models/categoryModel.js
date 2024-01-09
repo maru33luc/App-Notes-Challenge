@@ -23,6 +23,7 @@ const Category = db.define('categorias', {
         type: DataTypes.DATE,
         allowNull: false
     }
-    }, { timestamps: true });
+    }, { imestamps: true,
+        schema: 'railway' });
 
 module.exports = Category;
