@@ -4,7 +4,13 @@
   "description": "This project is a web application that allows you to efficiently manage your notes. You can create, edit, archive, and filter your notes according to your needs. The implementation is divided into two phases: note creation and the application of tags and filtering.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/app.js",
+    "dev": "nodemon backend/app.js",
+    "serve": "node backend/server.js",
+    "build:ssr": "ng run challenge:server:production",
+    "install": "npm install",
+    "build": "cd frontend && npm run build && cd .. && cd backend && npm run build"
     
     
   },
