@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "cd frontend && npm install && cd ../backend && npm install",
-    "build": "cd frontend && npm run build",
+    "build": "cd frontend && npm install && npm run build",
+    "install": "cd server && npm i && cd ../frontend && npm i ",
     "start": "node backend/app.js"
- 
+    
   },
   "keywords": [],
   "author": "",
