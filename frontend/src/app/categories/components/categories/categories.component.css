@@ -34,3 +34,7 @@
   .btn-primary, .btn-danger {
     margin-right: 5px; 
   }
+
+  .btn{
+    margin: 2px;
+  }

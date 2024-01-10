@@ -41,7 +41,7 @@ const Note = db.define('notas', {
     }
     
 }, { imestamps: true,
-    schema: 'railway'
+    schema: 'public'
 
 });
 

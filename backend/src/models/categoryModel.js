@@ -24,6 +24,6 @@ const Category = db.define('categorias', {
         allowNull: false
     }
     }, { imestamps: true,
-        schema: 'railway' });
+        schema: 'public' });
 
 module.exports = Category;

@@ -36,54 +36,50 @@ export class NoteService {
     return undefined;
   }
 
-  async getActiveNotes(): Promise<Note[] | undefined> {
+  private async getNotesByStatus(status: number): Promise<Note[] | undefined> {
     const cookieContent = this.cookieS.get('user');
     if (cookieContent) {
-    try {
-      const jIndex = cookieContent.indexOf('j:');
-      if (jIndex !== -1) {
+      try {
+        const jIndex = cookieContent.indexOf('j:');
+        if (jIndex !== -1) {
 
-        const jsonString = cookieContent.substring(jIndex + 2);
-        const endIndex = jsonString.indexOf('"}');
+          const jsonString = cookieContent.substring(jIndex + 2);
+          const endIndex = jsonString.indexOf('"}');
 
-        if (endIndex !== -1) {
-          const jsonSubstring = jsonString.substring(0, endIndex + 2);
-          try {
-            const parsedJson = JSON.parse(jsonSubstring);
-            const userId = parsedJson.id
+          if (endIndex !== -1) {
+            const jsonSubstring = jsonString.substring(0, endIndex + 2);
+            try {
+              const parsedJson = JSON.parse(jsonSubstring);
+              const userId = parsedJson.id;
 
-            const res = await fetch(`${this.notesUrl}/${userId}/status/1`);
-            const response = await res.json();
-            if(response){
-              this.$notes.next(response);
+              const res = await fetch(`${this.notesUrl}/${userId}/status/${status}`);
+              const response = await res.json();
+              if (response) {
+                return response;
+              }
+            } catch (error) {
+              console.error('Error al analizar JSON de la cookie:', error);
             }
-            return response;
-          } catch (error) {
-            console.error('Error al analizar JSON de la cookie:', error);
+          } else {
+            console.error('No se encontró \'"}\' en la cadena de la cookie');
           }
         } else {
-          console.error('No se encontró \'"}\' en la cadena de la cookie');
+          console.error('No se encontró \'j:\' en la cadena de la cookie');
         }
-      } else {
-        console.error('No se encontró \'j:\' en la cadena de la cookie');
-      }
 
-    } catch (err) {
-      console.log(err);
+      } catch (err) {
+        console.log(err);
+      }
     }
     return undefined;
-    }return undefined;
+  }
+
+  async getActiveNotes(): Promise<Note[] | undefined> {
+    return this.getNotesByStatus(1);
   }
 
   async getInactiveNotes(): Promise<Note[] | undefined> {
-    try {
-      const userId = 3
-      const res = await fetch(`${this.notesUrl}/${userId}/status/0`);
-      return await res.json();
-    } catch (err) {
-      console.log(err);
-    }
-    return undefined;
+    return this.getNotesByStatus(0);
   }
 
   async createNote(note: Note): Promise<void> {

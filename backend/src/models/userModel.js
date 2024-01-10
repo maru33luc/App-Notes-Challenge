@@ -29,7 +29,7 @@ const User = db.define('usuarios', {
     allowNull: false
   }
 }, {  timestamps: true,
-  schema: 'railway'
+  schema: 'public'
 
     });
 
