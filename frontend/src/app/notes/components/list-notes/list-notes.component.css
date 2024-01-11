@@ -1,5 +1,7 @@
 .container {
   margin-top: 20px;
+  width: 90vw!important;
+  max-width: 90vw!important;
 }
 
 .table th, .table td {
@@ -48,9 +50,12 @@
   width: auto!important;
 }
 
-@media screen and (max-width: 750px) {
-  .btn{
+@media screen and (max-width: 995px) {
+  .btn-td{
+    display: flex;
     flex-direction: column;
     gap: 5px;
   }
 }
+
+
