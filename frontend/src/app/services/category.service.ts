@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Category } from '../interfaces/Category';
 import { environments } from '../../environments/environments';
 import { BehaviorSubject } from 'rxjs';
+import axios from 'axios';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
-  categoryUrl = environments.urlBackCategories
+  categoryUrl = environments.urlBackCategories;
   categories$: BehaviorSubject<any> | undefined = new BehaviorSubject(null);
 
   constructor() {
@@ -21,6 +22,7 @@ export class CategoryService {
 
   async getCategoryName(id: number | undefined): Promise<string | undefined> {
     try{
+      
       const res = await fetch(`${this.categoryUrl}/${id}`);
       const data = await res.json();
       return data.nombre;

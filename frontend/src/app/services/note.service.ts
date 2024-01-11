@@ -38,6 +38,7 @@ export class NoteService {
 
   private async getNotesByStatus(status: number): Promise<Note[] | undefined> {
     const cookieContent = this.cookieS.get('user');
+    
     if (cookieContent) {
       try {
         const jIndex = cookieContent.indexOf('j:');

@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../interfaces/User';
 import axios from 'axios';
 import { environments } from '../../environments/environments';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,54 @@ export class LoginService {
   authState$: BehaviorSubject<any> | undefined = new BehaviorSubject(null) ;
   userUrl = environments.urlBackUsers;
 
-  constructor() {
-    this.isUserLoggedIn().then((user) => {
-      if (user) {
-        this.authState$?.next(user);
-      }
-    });
+  constructor(private cookieS: CookieService) {
+    // this.isUserLoggedIn().then((user) => {
+    //   if (user) {
+    //     this.authState$?.next(user);
+    //   }
+    // });
+    const id = this.getUserFromCookie()?.id;
+    if (id) {
+      this.buscarUsuarioPorId(id).then((user) => {
+        if (user) {
+          this.authState$?.next(user);
+        }
+      });
+    }
+  }
+  
 
+  getUserFromCookie(): { id: number } | undefined {
+    const cookieContent = this.cookieS.get('user');
+
+    if (cookieContent) {
+      try {
+        const jIndex = cookieContent.indexOf('j:');
+        if (jIndex !== -1) {
+          const jsonString = cookieContent.substring(jIndex + 2);
+          const endIndex = jsonString.indexOf('"}');
+
+          if (endIndex !== -1) {
+            const jsonSubstring = jsonString.substring(0, endIndex + 2);
+            try {
+              const parsedJson = JSON.parse(jsonSubstring);
+              const userId = parsedJson.id;
+              return { id: userId };
+            } catch (error) {
+              console.error('Error al analizar JSON de la cookie:', error);
+            }
+          } else {
+            console.error('No se encontró \'"}\' en la cadena de la cookie');
+          }
+        } else {
+          console.error('No se encontró \'j:\' en la cadena de la cookie');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    return undefined;
   }
 
   async getUsers() {
@@ -89,9 +131,9 @@ export class LoginService {
 
   async getDataActualUser() {
     try {
-      const res = await axios.get(`${this.userUrl}/auth`, { withCredentials: true });
-      if(res){
-        return res.data;
+      const res = await fetch(`${this.userUrl}/auth`, { credentials: 'include' });
+      if (res.status === 200) {
+        return await res.json();
       }
       return null;
     } catch (e) {
@@ -109,10 +151,24 @@ export class LoginService {
 
 async isUserLoggedIn(): Promise< User | null> {
   try {
-      const res = await axios.get(`${this.userUrl}/auth`, { withCredentials: true });
+      const res = await fetch (`${this.userUrl}/auth`, { credentials: 'include' });
       if (res.status === 200) {
-          this.authState$?.next(res.data);
-          return res.data;
+          return await res.json();
+      }
+      else {
+          return null;
+      }
+  } catch (e) {
+      console.log(e);
+      return null;
+  }
+}
+
+async buscarUsuarioPorId(id: number): Promise<User | null> {
+  try {
+      const res = await fetch (`${this.userUrl}/${id}`);
+      if (res.status === 200) {
+          return await res.json();
       }
       else {
           return null;

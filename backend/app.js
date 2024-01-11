@@ -16,8 +16,8 @@ const userRoutes = require('./src/routes/userRoutes');
 app.use (express.json());   
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-// Servir archivos estáticos desde la carpeta 'dist', en la raíz del sitio
 
+// Servir archivos estáticos desde la carpeta 'dist', en la raíz del sitio
 app.use(express.static(path.join(__dirname, '../frontend/dist/frontend/browser')));
 
 
@@ -26,8 +26,10 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/dist/frontend/browser/index.html'));
 })
 
+
+
 app.use(cors({
-    origin: '*',
+    origin: 'http://localhost:4200',
     credentials: true
   }));
 
