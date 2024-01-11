@@ -18,13 +18,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // Servir archivos estáticos desde la carpeta 'dist', en la raíz del sitio
 
-// app.use(express.static(path.join(__dirname, '../frontend/dist/frontend/browser')));
+app.use(express.static(path.join(__dirname, '../frontend/dist/frontend/browser')));
 
 
 // Ruta de fallback para manejar rutas Angular (evitar errores 404 al recargar la página)
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../frontend/dist/frontend/browser/index.html'));
-// })
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/frontend/browser/index.html'));
+})
 
 app.use(cors({
     origin: '*',

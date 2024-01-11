@@ -1,4 +1,4 @@
-export const environment = {
+export const environments = {
     production: true,
     urlBackNotes: '/notes',
     urlBackUsers: '/users',
