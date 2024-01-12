@@ -17,6 +17,6 @@ export class NewNoteComponent {
 
   sendData(note : Note) {
     this.noteService.createNote(note);
-    this.router.navigate(['/notes']);
+    this.router.navigate(['/notes-list']);
   }
 }

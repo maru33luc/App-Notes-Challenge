@@ -29,7 +29,7 @@ export class LoginFormComponent {
         this.loginService.login(this.loginForm.value.correo, this.loginForm.value.contraseñaHash);
         this.noteService.getActiveNotes();
         setTimeout(() => {
-          this.router.navigate(['/notes']);
+          this.router.navigate(['/notes-list']);
         }, 500);
 
       } catch (e) {

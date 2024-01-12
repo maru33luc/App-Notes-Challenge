@@ -33,7 +33,7 @@ export class HeaderComponent {
     this.loginService.logout();
     this.isLoggedIn = false;
     this.loginService.authState$?.next(null);
-    this.router.navigate(['/notes']);
+    this.router.navigate(['/notes-list']);
   }
 
   toggleMenu() {

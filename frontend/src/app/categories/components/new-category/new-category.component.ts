@@ -19,7 +19,7 @@ export class NewCategoryComponent {
 
   saveCategory(category: Category) {
       this.categoryService.createCategory(category);
-      this.router.navigate(['/categories']);
+      this.router.navigate(['/categories-list']);
     }
   
 }

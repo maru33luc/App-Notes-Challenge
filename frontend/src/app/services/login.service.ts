@@ -117,7 +117,7 @@ export class LoginService {
     try {
       const res = await axios.post(`${this.userUrl}/logout`, {}, { withCredentials: true });
       this.authState$?.next(null);
-      window.location.href = '/notes';
+      window.location.href = '/notes-list';
       if(res){
         alert('Sesión cerrada con éxito');
       }else{

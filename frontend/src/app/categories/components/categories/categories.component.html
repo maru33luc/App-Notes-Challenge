@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Listado de Categorías</h2>
   
-  <a class="btn btn-success" [routerLink]="['/categories/nueva-categoria']">Nueva Categoría</a>
+  <a class="btn btn-success" [routerLink]="['nueva-categoria']">Nueva Categoría</a>
 
   <table class="table mt-3" *ngIf="categories && categories.length > 0">
     <thead>
@@ -18,8 +18,8 @@
         <td>
           
             <button type="button" class="btn btn-primary btn-sm"
-            [routerLink]="['/categories/editar-categoria', category.id]"
-            (click)="editCategory(category)">Editar</button>
+            [routerLink]="['editar-categoria', category.id]"
+            >Editar</button>
             <button type="button" class="btn btn-danger btn-sm" (click)="deleteCategory(category.id)">Eliminar</button>
           
         </td>

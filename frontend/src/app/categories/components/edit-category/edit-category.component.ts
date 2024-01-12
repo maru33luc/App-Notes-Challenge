@@ -36,7 +36,7 @@ export class EditCategoryComponent {
   saveCategory(category: Category) {
     try{
       this.categoryService.updateCategory(category, this.router.snapshot.params['id']);
-      this.route.navigate(['/categories']);
+      this.route.navigate(['categories-list']);
     }catch(error){
       console.log(error);
     }

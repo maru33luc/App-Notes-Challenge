@@ -37,7 +37,7 @@ export class EditNoteComponent {
   sendData(note: Note) {
     try{
       this.noteService.updateNote(note, this.route.snapshot.params['id']);
-      this.router.navigate(['/notes']);
+      this.router.navigate(['/notes-list']);
     }catch(error){
       console.log(error);
     }

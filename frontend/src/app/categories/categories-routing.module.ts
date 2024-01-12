@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '', component: CategoriesPageComponent},
   { path: 'nueva-categoria', component: NewCategoryPagesComponent},
   { path: 'editar-categoria/:id', component: EditCategoryPageComponent},
-
+  
 ];
 
 @NgModule({

@@ -18,6 +18,7 @@ const routes: Routes = [
   { path: 'editar-nota/:id', component: EditNotePageComponent},
   { path: 'archive', component: ArchivePageComponent},
   
+  
 ];
 
 @NgModule({
