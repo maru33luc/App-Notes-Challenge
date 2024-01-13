@@ -22,11 +22,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../frontend/dist/frontend/browser')));
 
 app.use(cors({
-  origin: 'https://app-notes-challenge-production-555a.up.railway.app',
+  // origin: '*',
+  origin: 'https://app-notes-challenge-production.up.railway.app',
   credentials: true
 }));
 
-
+app.use ('/notes', noteRoutes)
+app.use ('/categories', categoryRoutes)
+app.use ('/users', userRoutes)
 
 // Ruta de fallback para manejar rutas Angular (evitar errores 404 al recargar la página)
 app.get('*', (req, res) => {
@@ -50,9 +53,7 @@ app.use(session({
     }
 }
 
-app.use ('/notes', noteRoutes)
-app.use ('/categories', categoryRoutes)
-app.use ('/users', userRoutes)
+
 
 app.listen(port, () => {
     conexionDB();

@@ -17,9 +17,8 @@ export class HeaderComponent {
     private router:Router) {}
 
   ngOnInit(): void {
-    
    this.loginService.authState$?.subscribe((user) => {
-      if (user && user.nombre) {
+      if (user) {
         this.isLoggedIn = true;
         this.userName = user.nombre;
       } else {

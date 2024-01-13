@@ -11,10 +11,18 @@ import { NoteService } from '../../../services/note.service';
 })
 export class LoginFormComponent {
 
+  userId? : number;
+
   constructor(private router: Router,
     private loginService: LoginService,
     private formBuilder: FormBuilder,
-    private noteService: NoteService) { }
+    private noteService: NoteService) {
+      this.loginService.authState$?.subscribe((user) => {
+        if(user){
+          this.userId = user.id;
+        }
+      });
+     }
 
   loginForm: FormGroup = this.formBuilder.group({
     correo: ['', [Validators.required, Validators.email]],
@@ -27,7 +35,7 @@ export class LoginFormComponent {
     } else {
       try {
         this.loginService.login(this.loginForm.value.correo, this.loginForm.value.contraseñaHash);
-        this.noteService.getActiveNotes();
+        this.noteService.getActiveNotes(this.userId);
         setTimeout(() => {
           this.router.navigate(['/notes-list']);
         }, 500);

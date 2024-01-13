@@ -5,6 +5,6 @@ export const routes: Routes = [
     { path: 'categories-list', loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule) },
     { path: 'register', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
     { path: 'login', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
-    
+    { path: '', redirectTo: 'notes-list', pathMatch: 'full'}
 ];
 

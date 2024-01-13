@@ -10,57 +10,15 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class LoginService {
 
-  authState$: BehaviorSubject<any> | undefined = new BehaviorSubject(null) ;
+  authState$: BehaviorSubject<any> | undefined = new BehaviorSubject(null);
   userUrl = environments.urlBackUsers;
 
   constructor(private cookieS: CookieService) {
-    // this.isUserLoggedIn().then((user) => {
-    //   if (user) {
-    //     this.authState$?.next(user);
-    //   }
-    // });
-    const id = this.getUserFromCookie()?.id;
-    if (id) {
-      this.buscarUsuarioPorId(id).then((user) => {
-        if (user) {
-          this.authState$?.next(user);
-        }
-      });
-    }
-  }
-  
-
-  getUserFromCookie(): { id: number } | undefined {
-    const cookieContent = this.cookieS.get('user');
-
-    if (cookieContent) {
-      try {
-        const jIndex = cookieContent.indexOf('j:');
-        if (jIndex !== -1) {
-          const jsonString = cookieContent.substring(jIndex + 2);
-          const endIndex = jsonString.indexOf('"}');
-
-          if (endIndex !== -1) {
-            const jsonSubstring = jsonString.substring(0, endIndex + 2);
-            try {
-              const parsedJson = JSON.parse(jsonSubstring);
-              const userId = parsedJson.id;
-              return { id: userId };
-            } catch (error) {
-              console.error('Error al analizar JSON de la cookie:', error);
-            }
-          } else {
-            console.error('No se encontró \'"}\' en la cadena de la cookie');
-          }
-        } else {
-          console.error('No se encontró \'j:\' en la cadena de la cookie');
-        }
-      } catch (err) {
-        console.log(err);
+    this.isUserLoggedIn().then((user) => {
+      if (user) {
+        this.authState$?.next(user);
       }
-    }
-
-    return undefined;
+    });
   }
 
   async getUsers() {
@@ -75,7 +33,7 @@ export class LoginService {
         contraseñaHash: password
       }
       const user = await axios.post(`${this.userUrl}/auth`, userCredential, { withCredentials: true });
-
+      localStorage.setItem('user', JSON.stringify(user.data));
       if (user) {
         this.authState$?.next(user.data);
         return user.data;
@@ -114,19 +72,10 @@ export class LoginService {
   }
 
   async logout() {
-    try {
-      const res = await axios.post(`${this.userUrl}/logout`, {}, { withCredentials: true });
-      this.authState$?.next(null);
-      window.location.href = '/notes-list';
-      if(res){
-        alert('Sesión cerrada con éxito');
-      }else{
-        alert('No se pudo cerrar sesión');
-      }
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
+    localStorage.removeItem('user');
+    this.authState$?.next(null);
+    window.location.href = '/notes-list';
+    alert('Sesión cerrada con éxito');
   }
 
   async getDataActualUser() {
@@ -145,37 +94,31 @@ export class LoginService {
   async getUserName() {
     const data = await this.getDataActualUser();
     if (data) {
-        return data.nombre;
+      return data.nombre;
     }
-}
+  }
 
-async isUserLoggedIn(): Promise< User | null> {
-  try {
-      const res = await fetch (`${this.userUrl}/auth`, { credentials: 'include' });
+  async isUserLoggedIn(): Promise<User | null> {
+    const user = localStorage.getItem('user');
+    if (user) {
+      return JSON.parse(user);
+    } else {
+      return null;
+    }
+  }
+
+  async buscarUsuarioPorId(id: number): Promise<User | null> {
+    try {
+      const res = await fetch(`${this.userUrl}/${id}`);
       if (res.status === 200) {
-          return await res.json();
+        return await res.json();
       }
       else {
-          return null;
+        return null;
       }
-  } catch (e) {
+    } catch (e) {
       console.log(e);
       return null;
+    }
   }
-}
-
-async buscarUsuarioPorId(id: number): Promise<User | null> {
-  try {
-      const res = await fetch (`${this.userUrl}/${id}`);
-      if (res.status === 200) {
-          return await res.json();
-      }
-      else {
-          return null;
-      }
-  } catch (e) {
-      console.log(e);
-      return null;
-  }
-}
 }

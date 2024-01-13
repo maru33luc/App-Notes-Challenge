@@ -53,10 +53,13 @@ module.exports = {
             const correo = req.body.correo;
             const contraseñaHash = req.body.contraseñaHash;
             const user = await userServices.getUserByEmailAndPassword(correo, contraseñaHash);
-            req.session.user = user;
-            req.session.auth = true;
-            res.cookie('user', user, { httpOnly: false, secure: false });
-            res.json(user);
+            if(user!= undefined && user!= null){
+                res.cookie('user', user, { httpOnly: false, secure: false });
+                res.json(user);
+            }
+            else{
+                res.json({error: 'Usuario o contraseña incorrectos'});
+            }
         }catch(error){
             console.log(error);
             res.json({error: 'Ocurrio un error'});
@@ -72,7 +75,6 @@ module.exports = {
         }
     },
     logout : (req, res) => {
-        req.session.destroy();
         res.clearCookie('user');
         res.json({message: 'Sesion cerrada'});
     }

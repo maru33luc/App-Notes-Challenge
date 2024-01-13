@@ -13,39 +13,42 @@ import { LoginService } from '../../../services/login.service';
 export class ListNotesComponent {
   filteredNotes: Note[] | undefined = [];
   notes: Note[] | undefined = [];
-  searchTitle: string = ''; 
+  searchTitle: string = '';
   startDate: Date | undefined;
   endDate: Date | undefined;
   order?: string;
   orderDirection?: string;
   loading: boolean = false;
+  userId?: number;
 
   constructor(private noteService: NoteService,
     private categoryService: CategoryService, private cookieS: CookieService, private loginService: LoginService) {
-      
-      this.loginService.authState$?.subscribe((user) => {
-        if(user){
-          this.loading = true;
-        }else{
-          this.loading = false;
-        }
-      });
 
-    this.noteService.getActiveNotes().then(notes => {
-      if (notes) {
-        this.notes = notes;
-        this.filteredNotes = [...(this.notes ?? [])];
-        for(let note of this.filteredNotes){
-          this.categoryService.getCategoryName(note.categoriaId).then((category) => {
-            if(category){
-              note.categoria = category;
+    this.loginService.authState$?.subscribe((user) => {
+      if (user) {
+        
+        this.userId = user.id;
+        this.noteService.getActiveNotes(user.id).then(notes => {
+          if (notes) {
+            this.notes = notes;
+            if (Array.isArray(this.notes)) {
+              this.filteredNotes = [...(this.notes ?? [])];
+              for (let note of this.filteredNotes) {
+                this.categoryService.getCategoryName(note.categoriaId).then((category) => {
+                  if (category) {
+                    note.categoria = category;
+                  }
+                });
+              }
+              this.loading = true;
+            } else {
+              this.filteredNotes = [];
+              this.loading = true;
             }
-          });
-        }
+          }
+        });
+      } else{
         this.loading = true;
-        if (this.filteredNotes.length !== 0) {
-          
-        }
       }
     });
   }
@@ -125,7 +128,7 @@ export class ListNotesComponent {
   }
 
   async clearFilters() {
-    const res = await this.noteService.getActiveNotes();
+    const res = await this.noteService.getActiveNotes(this.userId);
     if (res) {
       this.notes = res;
     }
@@ -134,8 +137,12 @@ export class ListNotesComponent {
     this.endDate = undefined;
     this.order = undefined;
     this.orderDirection = undefined;
+    if (Array.isArray(this.notes)) {
+      this.filteredNotes = [...(this.notes ?? [])];
 
-    this.filteredNotes = [...(this.notes ?? [])];
+    }else{
+      this.filteredNotes = [];
+    }
   }
 
 }

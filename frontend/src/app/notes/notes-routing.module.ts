@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'nueva-nota', component: NewNotePageComponent},
   { path: 'editar-nota/:id', component: EditNotePageComponent},
   { path: 'archive', component: ArchivePageComponent},
+  { path: '**', redirectTo: ''}
   
   
 ];

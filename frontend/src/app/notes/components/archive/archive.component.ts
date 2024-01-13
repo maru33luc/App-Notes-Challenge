@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Note } from '../../../interfaces/Note';
 import { NoteService } from '../../../services/note.service';
 import { CategoryService } from '../../../services/category.service';
+import { LoginService } from '../../../services/login.service';
 
 
 @Component({
@@ -14,8 +15,16 @@ export class ArchivoComponent implements OnInit {
   searchTitle: string = ''; 
   startDate: Date | undefined;
   endDate: Date | undefined;
+  userId?: number;
 
-  constructor(private noteService: NoteService, private categoryService: CategoryService) {}
+  constructor(private noteService: NoteService, private categoryService: CategoryService, private loginService:LoginService) {
+    this.loginService.authState$?.subscribe((user) => {
+      if(user){
+        this.userId = user.id;
+        this.getArchivedNotes();
+      }
+    });
+  }
 
   ngOnInit() {
     this.noteService.$inactiveNotes.subscribe(async notes => {
@@ -29,7 +38,8 @@ export class ArchivoComponent implements OnInit {
   }
 
   async getArchivedNotes() {
-    const notes = await this.noteService.getInactiveNotes();
+
+    const notes = await this.noteService.getInactiveNotes(this.userId);
     if(notes){
       for ( let note of notes) {
         note.categoria = await this.categoryService.getCategoryName(note.categoriaId);
