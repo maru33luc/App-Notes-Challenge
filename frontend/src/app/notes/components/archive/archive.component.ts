@@ -16,12 +16,15 @@ export class ArchivoComponent implements OnInit {
   startDate: Date | undefined;
   endDate: Date | undefined;
   userId?: number;
+  loading: boolean = false;
 
   constructor(private noteService: NoteService, private categoryService: CategoryService, private loginService:LoginService) {
     this.loginService.authState$?.subscribe((user) => {
       if(user){
         this.userId = user.id;
         this.getArchivedNotes();
+      }else{
+        this.loading = true;
       }
     });
   }
@@ -47,6 +50,7 @@ export class ArchivoComponent implements OnInit {
     }
     
     this.archivedNotes = notes || []; 
+    this.loading = true;
   }
 
   filterArchivedNotes() {

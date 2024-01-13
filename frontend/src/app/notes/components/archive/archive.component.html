@@ -50,6 +50,7 @@
             </tr>
         </thead>
         <tbody>
+            <ng-container *ngIf="loading; else loadingContent">
             <tr *ngFor="let archivedNote of archivedNotes">
                 <td>{{ archivedNote.title }}</td>
                 <td>{{ archivedNote.content }}</td>
@@ -62,6 +63,14 @@
             <tr *ngIf="archivedNotes && archivedNotes.length === 0">
                 <td colspan="5">No hay notas archivadas</td>
             </tr>
+        </ng-container>
+        <ng-template #loadingContent>
+            <tr>
+              
+                <img class="spinner" src="../../../../assets/img/spinner.svg" alt="Loading spinner">
+              
+            </tr>
+          </ng-template>
         </tbody>
     </table>
 </div>
