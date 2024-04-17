@@ -1,4 +1,4 @@
-const domain = 'https://app-notes-challenge-production-555a.up.railway.app/';
+const domain = 'http://localhost:3000/';
 
 export const environments = {
     production: true,

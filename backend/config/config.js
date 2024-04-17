@@ -9,7 +9,13 @@ module.exports = {
         "host": process.env.DB_HOST,
         "dialect": "postgres",
         "port": process.env.DB_PORT,
-        "schema": "public"
+        "schema": "public",
+        "dialectOptions": {
+            "ssl": {
+                "require": true,
+                "rejectUnauthorized": false
+            }
+        }
     },
     "test": {
         "username": process.env.DB_USER,
@@ -25,6 +31,12 @@ module.exports = {
         "database": process.env.DB_NAME,
         "host": process.env.DB_HOST,
         "dialect": "postgres",
-        "port": process.env.DB_PORT
+        "port": process.env.DB_PORT,
+        "dialectOptions": {
+            "ssl": {
+                "require": true,
+                "rejectUnauthorized": false
+            }
+        }
     }
     }

@@ -22,8 +22,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../frontend/dist/frontend/browser')));
 
 app.use(cors({
-  // origin: '*',
-  origin: 'https://app-notes-challenge-production.up.railway.app',
+  origin: 'http://localhost:4200',
+  // origin: 'https://app-notes-challenge-production.up.railway.app',
   credentials: true
 }));
 

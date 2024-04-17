@@ -36,9 +36,9 @@ export class LoginFormComponent {
       try {
         this.loginService.login(this.loginForm.value.correo, this.loginForm.value.contraseñaHash);
         this.noteService.getActiveNotes(this.userId);
-        setTimeout(() => {
-          this.router.navigate(['/notes-list']);
-        }, 500);
+        // setTimeout(() => {
+        //   this.router.navigate(['/notes-list']);
+        // }, 500);
 
       } catch (e) {
         console.log(e);

@@ -42,5 +42,8 @@
     "serve": "^14.2.1",
     "tslib": "^2.6.2",
     "zone.js": "~0.14.2"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^17.3.4"
   }
 }
