@@ -22,7 +22,6 @@ export class CategoryService {
 
   async getCategoryName(id: number | undefined): Promise<string | undefined> {
     try{
-      
       const res = await fetch(`${this.categoryUrl}/${id}`);
       const data = await res.json();
       return data.nombre;
@@ -99,6 +98,7 @@ export class CategoryService {
         body: JSON.stringify(category)
       });
       const data = await res.json();
+      this.categories$?.next(await this.getCategories());
       return data;
     }catch(err){
       console.log(err);

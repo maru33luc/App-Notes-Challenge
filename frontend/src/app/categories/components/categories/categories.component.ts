@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Category } from '../../../interfaces/Category';
 import { CategoryService } from '../../../services/category.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-category-list',
@@ -15,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class CategoryListComponent implements OnInit {
   categories: Category[] = [];
-
+  
   constructor(private categoryService: CategoryService, private router: Router) {}
 
   ngOnInit(): void {

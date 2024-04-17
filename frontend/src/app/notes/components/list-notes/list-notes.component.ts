@@ -64,6 +64,14 @@ export class ListNotesComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.noteService.$notes.subscribe((notes) => {
+      this.notes = notes;
+      this.filteredNotes = [...(this.notes ?? [])];
+    });
+
+  }
+
   filterNotesByDates() {
     if (this.startDate || this.endDate) {
       this.filteredNotes = this.filteredNotes?.filter(note =>

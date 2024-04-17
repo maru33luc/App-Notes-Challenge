@@ -78,6 +78,10 @@ export class NoteService {
           'Content-Type': 'application/json'
         }
       });
+      const notes = await this.getNotes();
+      if (notes) {
+        this.$notes.next(notes);
+      }
     } catch (err) {
       console.log(err);
     }
