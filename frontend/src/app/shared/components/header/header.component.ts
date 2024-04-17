@@ -1,9 +1,15 @@
 import { Component, Input } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { LoginPageComponent } from '../../../auth/pages/login-page/login-page.component';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
+  imports: [
+    CommonModule, RouterLink, LoginPageComponent
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })

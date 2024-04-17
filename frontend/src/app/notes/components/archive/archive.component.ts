@@ -3,10 +3,20 @@ import { Note } from '../../../interfaces/Note';
 import { NoteService } from '../../../services/note.service';
 import { CategoryService } from '../../../services/category.service';
 import { LoginService } from '../../../services/login.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'app-archivo',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule
+  ],
   templateUrl: './archive.component.html',
   styleUrls: ['./archive.component.css']
 })

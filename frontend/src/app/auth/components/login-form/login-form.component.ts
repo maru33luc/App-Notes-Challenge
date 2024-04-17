@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoteService } from '../../../services/note.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login-form',
+  standalone: true,
+  imports: [CommonModule,
+    ReactiveFormsModule, FormsModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css'
 })
@@ -36,9 +40,6 @@ export class LoginFormComponent {
       try {
         this.loginService.login(this.loginForm.value.correo, this.loginForm.value.contraseñaHash);
         this.noteService.getActiveNotes(this.userId);
-        // setTimeout(() => {
-        //   this.router.navigate(['/notes-list']);
-        // }, 500);
 
       } catch (e) {
         console.log(e);

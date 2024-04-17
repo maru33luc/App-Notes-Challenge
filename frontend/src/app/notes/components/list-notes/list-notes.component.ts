@@ -4,9 +4,20 @@ import { NoteService } from '../../../services/note.service';
 import { CategoryService } from '../../../services/category.service';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from '../../../services/login.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-list-notes',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule, RouterLink
+  ],
   templateUrl: './list-notes.component.html',
   styleUrl: './list-notes.component.css'
 })

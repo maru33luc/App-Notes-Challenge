@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../../../services/login.service';
 import { User } from '../../../interfaces/User';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register-form',
+  standalone: true,
+  imports:[CommonModule,
+    ReactiveFormsModule, FormsModule],
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.css'
 })

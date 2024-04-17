@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Category } from '../../../interfaces/Category';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-form-category',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './form-category.component.html',
   styleUrl: './form-category.component.css'
 })

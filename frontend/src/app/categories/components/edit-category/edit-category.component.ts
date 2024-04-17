@@ -2,9 +2,13 @@ import { Component } from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from '../../../interfaces/Category';
+import { CommonModule } from '@angular/common';
+import { FormCategoryComponent } from '../form-category/form-category.component';
 
 @Component({
   selector: 'app-edit-category',
+  standalone: true,
+  imports: [CommonModule, FormCategoryComponent],
   templateUrl: './edit-category.component.html',
   styleUrl: './edit-category.component.css'
 })

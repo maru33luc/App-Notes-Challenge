@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Category } from '../../../interfaces/Category';
 import { CategoryService } from '../../../services/category.service';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-category-list',
+  standalone: true,
+  imports: [CommonModule,
+  ReactiveFormsModule, RouterLink],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
