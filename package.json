@@ -4,8 +4,8 @@
   "description": "This project is a web application that allows you to efficiently manage your notes. You can create, edit, archive, and filter your notes according to your needs. The implementation is divided into two phases: note creation and the application of tags and filtering.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install && cd frontend && npm run build  ",
+   "test": "echo \"Error: no test specified\" && exit 1",
+    "build": " npm install && cd backend && npm install && cd ../frontend && npm install && ng build",
     "start": " cd backend && npm run start "
   },
   "dependencies": {
