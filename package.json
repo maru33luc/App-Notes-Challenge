@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": " npm install && cd backend && npm install && cd../frontend && npm install && ng build",
-    "start": " cd backend && npm run start "
+    "build": " npm install && cd backend && npm install && cd ../frontend && npm install && ng build",
+    "start": " cd ../backend && npm run start "
   },
   "dependencies": {
     "@angular/animations": "^17.0.0",
