@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Servir archivos estáticos desde la carpeta 'dist', en la raíz del sitio
-app.use(express.static(path.join(__dirname, '../frontend/dist/frontend/browser')));
+// app.use(express.static(path.join(__dirname, '../frontend/dist/frontend/browser')));
 
 app.use(cors({
   origin: 'http://localhost:4000', //production
