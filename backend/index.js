@@ -30,7 +30,12 @@ app.use ('/notes', noteRoutes)
 app.use ('/categories', categoryRoutes)
 app.use ('/users', userRoutes)
 
-// Ruta de fallback para manejar rutas Angular (evitar errores 404 al recargar la página)
+// Ruta de fallback para manejar rutas Angular (evitar errores 404 al recargar la página) 
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/frontend/browser/index.html'));
+});
+
+
 
 
   const secretKey = 'secretKey';
