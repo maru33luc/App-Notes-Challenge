@@ -1,5 +1,7 @@
 // const domain = 'http://localhost:3000/';
-const domain = 'https://app-notes-challenge.onrender.com/';
+// const domain = 'https://app-notes-challenge.onrender.com/';
+const domain = 'https://app-notes-challenge-server.vercel.app/';
+
 
 export const environments = {
     production: true,
