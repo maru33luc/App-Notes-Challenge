@@ -1,12 +1,12 @@
 @echo off
 
-REM Set MYSQL_PWD environment variable
-set MYSQL_PWD=Maru29luc
-
-REM Script to set up and run the application
+REM Set environment variables
+set MYSQL_USER=root
+set MYSQL_DATABASE=notas_challenge
+set MYSQL_PASSWORD=your_password_here
 
 REM Database configuration
-mysql -u root -e "CREATE DATABASE IF NOT EXISTS notas_challenge;"
+mysql -u %MYSQL_USER% -p%MYSQL_PASSWORD% -e "CREATE DATABASE IF NOT EXISTS %MYSQL_DATABASE%;"
 
 REM Create SQL file
 echo CREATE TABLE IF NOT EXISTS usuarios ( > create_tables.sql
@@ -40,7 +40,7 @@ echo    FOREIGN KEY (categoriaId) REFERENCES categorias(id) >> create_tables.sql
 echo ); >> create_tables.sql
 
 REM Execute SQL file
-mysql -u root notas_challenge < create_tables.sql
+mysql -u %MYSQL_USER% -p%MYSQL_PASSWORD% %MYSQL_DATABASE% < create_tables.sql
 
 REM Backend configuration
 echo Installing backend dependencies...

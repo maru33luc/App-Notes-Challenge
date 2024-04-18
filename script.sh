@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Set MYSQL_PWD environment variable
-export MYSQL_PWD=Maru29luc
-
-# Script to set up and run the application
+# Set environment variables
+export MYSQL_USER=root
+export MYSQL_DATABASE=notas_challenge
+export MYSQL_PASSWORD=your_password_here
 
 # Database configuration
-mysql -u root -e "CREATE DATABASE IF NOT EXISTS notas_challenge;"
+mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
 
 # Create SQL file
 cat <<EOF > create_tables.sql
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS notas (
 EOF
 
 # Execute SQL file
-mysql -u root notas_challenge < create_tables.sql
+mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < create_tables.sql
 
 # Backend configuration
 echo "Installing backend dependencies..."
