@@ -3,7 +3,7 @@
 REM Set environment variables
 set MYSQL_USER=root
 set MYSQL_DATABASE=notas_challenge
-set MYSQL_PASSWORD=your_password_here
+set MYSQL_PASSWORD=Catalina1450_andrea
 
 REM Database configuration
 mysql -u %MYSQL_USER% -p%MYSQL_PASSWORD% -e "CREATE DATABASE IF NOT EXISTS %MYSQL_DATABASE%;"

@@ -73,7 +73,7 @@
     </thead>
     <tbody>
       <ng-container *ngIf="loading; else loadingContent">
-        <tr *ngFor="let note of filteredNotes">
+        <tr *ngFor="let note of filteredNotes | async">
           <td>{{ note.title }}</td>
           <td>{{ note.content }}</td>
           <td>{{ note.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
@@ -85,9 +85,13 @@
           </td>
         </tr>
 
-        <tr *ngIf="filteredNotes && filteredNotes.length === 0">
+        <tr *ngIf="userId && (filteredNotes | async)?.length === 0">
           <td colspan="5">No hay notas</td>
         </tr>
+        <tr *ngIf="!userId">
+          <td colspan="5">Debe loguearse para ver las notas</td>
+        </tr>
+
       </ng-container>
       <ng-template #loadingContent>
         <tr>

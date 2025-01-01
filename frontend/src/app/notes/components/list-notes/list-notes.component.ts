@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-notes',
@@ -22,7 +23,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './list-notes.component.css'
 })
 export class ListNotesComponent {
-  filteredNotes: Note[] | undefined = [];
+  // filteredNotes: Note[] | undefined = [];
+  filteredNotes: Observable<Note[]> | undefined;
   notes: Note[] | undefined = [];
   searchTitle: string = '';
   startDate: Date | undefined;
@@ -37,88 +39,125 @@ export class ListNotesComponent {
 
     this.loginService.authState$?.subscribe((user) => {
       if (user) {
-        
+
         this.userId = user.id;
         this.noteService.getActiveNotes(user.id).then(notes => {
           if (notes) {
             this.notes = notes;
             if (Array.isArray(this.notes)) {
-              this.filteredNotes = [...(this.notes ?? [])];
-              for (let note of this.filteredNotes) {
-                this.categoryService.getCategoryName(note.categoriaId).then((category) => {
-                  if (category) {
-                    note.categoria = category;
-                  }
-                });
+              this.filteredNotes = new Observable<Note[]>(observer => {
+                observer.next(this.notes ?? []);
+                observer.complete();
+              });
+              if (this.filteredNotes) {
+                this.loading = true;
               }
               this.loading = true;
             } else {
-              this.filteredNotes = [];
+              this.filteredNotes = new Observable<Note[]>(observer => {
+                observer.next([]);
+                observer.complete();
+              });
               this.loading = true;
             }
           }
         });
       } else{
         this.loading = true;
+
+        this.noteService.$notes.subscribe((notes) => {
+          this.notes = notes;
+          this.filteredNotes = new Observable<Note[]>(observer => {
+            observer.next(this.notes ?? []);
+            observer.complete();
+          });
+        });
       }
     });
   }
 
   ngOnInit(): void {
+    // this.noteService.$notes.subscribe((notes) => {
+    //   this.notes = notes;
+    //   this.filteredNotes = [...(this.notes ?? [])];
+    // });
+
     this.noteService.$notes.subscribe((notes) => {
       this.notes = notes;
-      this.filteredNotes = [...(this.notes ?? [])];
+      this.filteredNotes = new Observable<Note[]>(observer => {
+        observer.next(this.notes ?? []);
+        observer.complete();
+      });
     });
-
   }
 
   filterNotesByDates() {
     if (this.startDate || this.endDate) {
-      this.filteredNotes = this.filteredNotes?.filter(note =>
-        (note.createdAt && new Date(note.createdAt) >= new Date(this.startDate!)) &&
-        (note.createdAt && new Date(note.createdAt) <= new Date(this.endDate!))
-      );
+      this.filteredNotes?.subscribe(notes => {
+        this.filteredNotes = new Observable<Note[]>(observer => {
+          observer.next(notes.filter(note =>
+            (note.createdAt && new Date(note.createdAt) >= new Date(this.startDate!)) &&
+            (note.createdAt && new Date(note.createdAt) <= new Date(this.endDate!))
+          ));
+          observer.complete();
+        });
+      });
     }
   }
 
   applyTitleFilter() {
-    this.filteredNotes = this.filteredNotes?.filter(note => note.title.toLowerCase().includes(this.searchTitle.toLowerCase()));
+    this.filteredNotes?.subscribe(notes => {
+      this.filteredNotes = new Observable<Note[]>(observer => {
+        observer.next(notes.filter(note => note.title.toLowerCase().includes(this.searchTitle.toLowerCase())));
+        observer.complete();
+      });
+    });
   }
 
   applyOrderFilter() {
-    if (this.order === 'Titulo') {
-      this.filteredNotes = this.filteredNotes?.sort((a, b) => {
-        if (a.title && b.title) {
-          return a.title.localeCompare(b.title);
+    this.filteredNotes?.subscribe(notes => {
+      this.filteredNotes = new Observable<Note[]>(observer => {
+        if (this.order === 'Titulo') {
+          observer.next(notes.sort((a, b) => {
+            if (a.title && b.title) {
+              return a.title.localeCompare(b.title);
+            }
+            return 0;
+          }));
+        } else {
+          observer.next(notes.sort((a, b) => {
+            if (a.createdAt && b.createdAt) {
+              return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+            }
+            return 0;
+          }));
         }
-        return 0;
+        observer.complete();
       });
-    } else {
-      this.filteredNotes = this.filteredNotes?.sort((a, b) => {
-        if (a.createdAt && b.createdAt) {
-          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-        }
-        return 0;
-      });
-    }
+    });
   }
 
   applyOrderDirectionFilter() {
-    if (this.orderDirection === 'asc') {
-      this.filteredNotes = this.filteredNotes?.sort((a, b) => {
-        if (a.createdAt && b.createdAt) {
-          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    this.filteredNotes?.subscribe(notes => {
+      this.filteredNotes = new Observable<Note[]>(observer => {
+        if (this.orderDirection === 'asc') {
+          observer.next(notes.sort((a, b) => {
+            if (a.createdAt && b.createdAt) {
+              return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+            }
+            return 0;
+          }));
+        } else if (this.orderDirection === 'desc') {
+          observer.next(notes.sort((a, b) => {
+            if (a.createdAt && b.createdAt) {
+              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            }
+            return 0;
+          }));
         }
-        return 0;
+        observer.complete();
       });
-    } else if (this.orderDirection === 'desc') {
-      this.filteredNotes = this.filteredNotes?.sort((a, b) => {
-        if (a.createdAt && b.createdAt) {
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-        }
-        return 0;
-      });
-    }
+    });
   }
 
   applyFilter() {
@@ -131,7 +170,7 @@ export class ListNotesComponent {
   deleteNote(id: number | undefined) {
     try {
       this.noteService.deleteNotes(id);
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -140,7 +179,7 @@ export class ListNotesComponent {
   fileNote(id: number | undefined) {
     try {
       this.noteService.fileNote(id);
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -157,10 +196,16 @@ export class ListNotesComponent {
     this.order = undefined;
     this.orderDirection = undefined;
     if (Array.isArray(this.notes)) {
-      this.filteredNotes = [...(this.notes ?? [])];
+      this.filteredNotes = new Observable<Note[]>(observer => {
+        observer.next(this.notes ?? []);
+        observer.complete();
+      });
 
     }else{
-      this.filteredNotes = [];
+      this.filteredNotes = new Observable<Note[]>(observer => {
+        observer.next([]);
+        observer.complete();
+      });
     }
   }
 

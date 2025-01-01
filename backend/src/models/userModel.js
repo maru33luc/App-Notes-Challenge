@@ -28,9 +28,11 @@ const User = db.define('usuarios', {
     type: DataTypes.DATE,
     allowNull: false
   }
-}, {  timestamps: true,
-  schema: 'public'
+}, 
+{  timestamps: true,
+  // schema: 'public'
 
-    });
+    }
+  );
 
 module.exports = User;

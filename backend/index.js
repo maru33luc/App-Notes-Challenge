@@ -22,7 +22,8 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, '../frontend/dist/frontend/browser')));
 
 app.use(cors({
-  origin: 'https://app-notes-client.vercel.app',
+  // origin: 'https://app-notes-client.vercel.app',
+  origin: 'http://localhost:4200',
   credentials: true
 }));
 
