@@ -20,12 +20,10 @@ export class CategoryListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories()
-    console.log(this.categories);
   }
 
   async loadCategories(): Promise<void> {
     this.categories = await this.categoryService.getCategories();
-    console.log(this.categories);
   }
 
   editCategory(category: Category): void {
@@ -34,7 +32,6 @@ export class CategoryListComponent implements OnInit {
   deleteCategory(categoryId: number | undefined): void {
     if (categoryId) {
       this.categoryService.deleteCategory(categoryId);
-      window.location.reload();
     }
   }
 }

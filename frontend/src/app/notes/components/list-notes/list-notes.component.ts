@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed, OnInit } from '@angular/core';
 import { Note } from '../../../interfaces/Note';
 import { NoteService } from '../../../services/note.service';
 import { CategoryService } from '../../../services/category.service';
@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-notes',
@@ -16,209 +15,124 @@ import { Observable } from 'rxjs';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule, RouterLink
+    NgbModule,
+    RouterLink,
   ],
   templateUrl: './list-notes.component.html',
-  styleUrl: './list-notes.component.css'
+  styleUrls: ['./list-notes.component.css'],
 })
-export class ListNotesComponent {
-  // filteredNotes: Note[] | undefined = [];
-  filteredNotes: Observable<Note[]> | undefined;
-  notes: Note[] | undefined = [];
-  searchTitle: string = '';
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  order?: string;
-  orderDirection?: string;
-  loading: boolean = false;
+export class ListNotesComponent implements OnInit {
+  // Signals
+  notes = this.noteService.$notes; // Todas las notas
+  activeNotes = this.noteService.$activeNotes; // Notas activas
   userId = signal<number | null>(null);
 
-  constructor(private noteService: NoteService,
-    private categoryService: CategoryService, private loginService: LoginService) {
+  // Filtros
+  searchTitle = signal<string>('');
+  startDate = signal<Date | undefined>(undefined);
+  endDate = signal<Date | undefined>(undefined);
+  order = signal<string | undefined>(undefined);
+  orderDirection = signal<string | undefined>(undefined);
 
-      this.loginService.isUserLoggedIn().then(user => {
-        console.log(user);
+  // Computed signal para notas filtradas
+  filteredNotes = computed(() => {
+    let filtered = this.activeNotes();
 
-        if (user) {
-          console.log(user);
+    // Filtro por título
+    const search = this.searchTitle().toLowerCase();
+    if (search) {
+      filtered = filtered.filter((note) =>
+        note.title?.toLowerCase().includes(search)
+      );
+    }
 
-          if (user.id !== undefined) {
-            this.userId.set(user.id);
-
-            this.noteService.getActiveNotes(user.id).then(notes => {
-              if (notes) {
-                this.notes = notes;
-                console.log(this.notes);
-                if (Array.isArray(this.notes)) {
-                  this.filteredNotes = new Observable<Note[]>(observer => {
-                    observer.next(this.notes ?? []);
-                    observer.complete();
-                  });
-
-                  this.loading = true;
-                } else {
-                  this.filteredNotes = new Observable<Note[]>(observer => {
-                    observer.next([]);
-                    observer.complete();
-                  });
-                  this.loading = true;
-                }
-              }
-            });
-          }
-
-        } else{
-          this.loading = true;
-
-          this.noteService.$notes.subscribe((notes) => {
-            this.notes = notes;
-            this.filteredNotes = new Observable<Note[]>(observer => {
-              observer.next(this.notes ?? []);
-              observer.complete();
-            });
-          });
-        }
+    // Filtro por fechas
+    const start = this.startDate();
+    const end = this.endDate();
+    if (start || end) {
+      filtered = filtered.filter((note) => {
+        const createdAt = note.createdAt ? new Date(note.createdAt) : null;
+        return (
+          (!start || (createdAt && createdAt >= start)) &&
+          (!end || (createdAt && createdAt <= end))
+        );
       });
+    }
 
+    // Ordenamiento
+    const order = this.order();
+    const orderDirection = this.orderDirection();
+    if (order === 'Titulo') {
+      filtered = filtered.sort((a, b) =>
+        a.title && b.title ? a.title.localeCompare(b.title) : 0
+      );
+    } else if (order === 'Fecha') {
+      filtered = filtered.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateA - dateB;
+      });
+    }
 
+    // Dirección del ordenamiento
+    if (orderDirection === 'desc') {
+      filtered = filtered.reverse();
+    }
 
-  }
+    return filtered;
+  });
+
+  loading = signal<boolean>(false);
+
+  constructor(
+    private noteService: NoteService,
+    private categoryService: CategoryService,
+    private loginService: LoginService
+  ) {}
 
   ngOnInit(): void {
-    // this.noteService.$notes.subscribe((notes) => {
-    //   this.notes = notes;
-    //   this.filteredNotes = [...(this.notes ?? [])];
-    // });
+    this.loading.set(true);
+    this.loginService.isUserLoggedIn().then((user) => {
+      if (user) {
+        this.userId.set(user.id ?? null);
+        this.noteService.getActiveNotes(user.id);
+      }
+      this.loading.set(false);
+    });
 
-    this.noteService.$notes.subscribe((notes) => {
-      this.notes = notes;
-      this.filteredNotes = new Observable<Note[]>(observer => {
-        observer.next(this.notes ?? []);
-        observer.complete();
-      });
+    this.noteService.getNotes(); // Opcional, si necesitas cargar todas las notas
+  }
+
+  // Métodos
+  applyFilter(): void {
+    // La reactividad de las signals hace que este método sea opcional
+  }
+
+  clearFilters(): void {
+    this.searchTitle.set('');
+    this.startDate.set(undefined);
+    this.endDate.set(undefined);
+    this.order.set(undefined);
+    this.orderDirection.set(undefined);
+  }
+
+  deleteNote(id: number | undefined): void {
+    if (!id) return;
+    this.noteService.deleteNotes(id).then(() => {
+      const userId = this.userId();
+      if (userId) {
+        this.noteService.getActiveNotes(userId);
+      }
     });
   }
 
-  filterNotesByDates() {
-    if (this.startDate || this.endDate) {
-      this.filteredNotes?.subscribe(notes => {
-        this.filteredNotes = new Observable<Note[]>(observer => {
-          observer.next(notes.filter(note =>
-            (note.createdAt && new Date(note.createdAt) >= new Date(this.startDate!)) &&
-            (note.createdAt && new Date(note.createdAt) <= new Date(this.endDate!))
-          ));
-          observer.complete();
-        });
-      });
-    }
-  }
-
-  applyTitleFilter() {
-    this.filteredNotes?.subscribe(notes => {
-      this.filteredNotes = new Observable<Note[]>(observer => {
-        observer.next(notes.filter(note => note.title.toLowerCase().includes(this.searchTitle.toLowerCase())));
-        observer.complete();
-      });
+  fileNote(id: number | undefined): void {
+    if (!id) return;
+    this.noteService.fileNote(id).then(() => {
+      const userId = this.userId();
+      if (userId) {
+        this.noteService.getActiveNotes(userId);
+      }
     });
   }
-
-  applyOrderFilter() {
-    this.filteredNotes?.subscribe(notes => {
-      this.filteredNotes = new Observable<Note[]>(observer => {
-        if (this.order === 'Titulo') {
-          observer.next(notes.sort((a, b) => {
-            if (a.title && b.title) {
-              return a.title.localeCompare(b.title);
-            }
-            return 0;
-          }));
-        } else {
-          observer.next(notes.sort((a, b) => {
-            if (a.createdAt && b.createdAt) {
-              return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-            }
-            return 0;
-          }));
-        }
-        observer.complete();
-      });
-    });
-  }
-
-  applyOrderDirectionFilter() {
-    this.filteredNotes?.subscribe(notes => {
-      this.filteredNotes = new Observable<Note[]>(observer => {
-        if (this.orderDirection === 'asc') {
-          observer.next(notes.sort((a, b) => {
-            if (a.createdAt && b.createdAt) {
-              return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-            }
-            return 0;
-          }));
-        } else if (this.orderDirection === 'desc') {
-          observer.next(notes.sort((a, b) => {
-            if (a.createdAt && b.createdAt) {
-              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-            }
-            return 0;
-          }));
-        }
-        observer.complete();
-      });
-    });
-  }
-
-  applyFilter() {
-    this.filterNotesByDates();
-    this.applyTitleFilter();
-    this.applyOrderFilter();
-    this.applyOrderDirectionFilter();
-  }
-
-  deleteNote(id: number | undefined) {
-    try {
-      this.noteService.deleteNotes(id);
-      // window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  fileNote(id: number | undefined) {
-    try {
-      this.noteService.fileNote(id);
-      // window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async clearFilters() {
-    const id = this.userId();
-    if(id){
-      this.notes = await this.noteService.getActiveNotes(id);
-    }else{
-      this.notes = await this.noteService.getNotes();
-    }
-    this.searchTitle = '';
-    this.startDate = undefined;
-    this.endDate = undefined;
-    this.order = undefined;
-    this.orderDirection = undefined;
-    if (Array.isArray(this.notes)) {
-      this.filteredNotes = new Observable<Note[]>(observer => {
-        observer.next(this.notes ?? []);
-        observer.complete();
-      });
-
-    }else{
-      this.filteredNotes = new Observable<Note[]>(observer => {
-        observer.next([]);
-        observer.complete();
-      });
-    }
-  }
-
 }
-
-

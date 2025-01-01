@@ -18,7 +18,6 @@ export class CategoryService {
     this.getCategories().then((categories) => {
       if (categories) {
         this.categories$.set(categories);
-        console.log(this.categories$);
       }
     });
   }

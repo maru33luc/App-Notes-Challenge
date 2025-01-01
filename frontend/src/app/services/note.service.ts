@@ -1,50 +1,67 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Note } from '../interfaces/Note';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { environments } from '../../environments/environments';
+import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoteService {
 
-  $notes: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
-  $inactiveNotes: BehaviorSubject<Note[]> = new BehaviorSubject<Note[]>([]);
+  $notes = signal<Note[]>([]);
+  $inactiveNotes = signal<Note[]>([]);
+  $activeNotes = signal<Note[]>([]);
   notesUrl = environments.urlBackNotes;
 
-  constructor() {}
+  constructor(private loginService: LoginService) {
+    const userId = this.loginService.authState$()?.id;
+    this.getActiveNotes(userId);
 
-  async getNotes(): Promise<Note[] | undefined> {
-    try {
-      const res = await fetch(this.notesUrl);
-      return await res.json();
-    } catch (err) {
-      console.log(err);
-    }
-    return undefined;
   }
 
-  async getActiveNotes (id: number | undefined): Promise<Note[] | undefined> {
+  async getNotes() {
+    try {
+      const res = await fetch(this.notesUrl);
+      if (res.ok) {
+        const notes = await res.json();
+        this.$notes.set(notes);
+      }
+    } catch (err) {
+      console.error('Error fetching notes:', err);
+    }
+  }
+
+  async getActiveNotes (id: number | undefined) {
+    if (!id) return;
     try {
       const res = await fetch(`${this.notesUrl}/${id}/status/1`);
-      return await res.json();
+      if (res.ok) {
+        const activeNotes = await res.json();
+        this.$activeNotes.set(activeNotes);
+      }
     } catch (err) {
-      console.log(err);
+      console.error('Error fetching active notes:', err);
     }
-    return undefined;
   }
 
   async getInactiveNotes (id: number | undefined): Promise<Note[] | undefined> {
+    if (!id) return undefined;
     try {
       const res = await fetch(`${this.notesUrl}/${id}/status/0`);
-      return await res.json();
+      if (res.ok) {
+        const inactiveNotes = await res.json();
+        this.$inactiveNotes.set(inactiveNotes);
+        return inactiveNotes;
+      }
     } catch (err) {
-      console.log(err);
+      console.error('Error fetching inactive notes:', err);
     }
     return undefined;
   }
 
-  async createNote(note: Note): Promise<void> {
+
+  async createNote(note: Note) {
     try {
       await fetch(`${this.notesUrl}`, {
         method: 'POST',
@@ -58,7 +75,7 @@ export class NoteService {
     }
   }
 
-  async deleteNotes(id: number | undefined): Promise<void> {
+  async deleteNotes(id: number | undefined){
     try {
       await fetch(`${this.notesUrl}/${id}`, {
         method: 'DELETE',
@@ -68,7 +85,7 @@ export class NoteService {
     }
   }
 
-  async updateNote(note: Note, id: number): Promise<void> {
+  async updateNote(note: Note, id: number) {
     try {
       await fetch(`${this.notesUrl}/${id}`, {
         method: 'PUT',
@@ -77,10 +94,8 @@ export class NoteService {
           'Content-Type': 'application/json'
         }
       });
-      const notes = await this.getNotes();
-      if (notes) {
-        this.$notes.next(notes);
-      }
+      this.getNotes();
+
     } catch (err) {
       console.log(err);
     }
@@ -89,7 +104,9 @@ export class NoteService {
   async getNoteById(id: number): Promise<Note | undefined> {
     try {
       const res = await fetch(`${this.notesUrl}/${id}`);
-      return await res.json();
+      if(res){
+        return await res.json();
+      }
     } catch (err) {
       console.log(err);
     }

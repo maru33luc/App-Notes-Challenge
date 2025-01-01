@@ -72,8 +72,8 @@
           </tr>
         </thead>
         <tbody>
-          @if (loading) {
-            @for (note of filteredNotes | async; track note) {
+          @if (!loading()) {
+            @for (note of filteredNotes() ; track note) {
               <tr>
                 <td>{{ note.title }}</td>
                 <td>{{ note.content }}</td>
@@ -86,7 +86,7 @@
                 </td>
               </tr>
             }
-            @if (userId() && (filteredNotes | async)?.length === 0) {
+            @if (userId() && filteredNotes().length === 0) {
               <tr>
                 <td colspan="5">No hay notas</td>
               </tr>

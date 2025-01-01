@@ -18,7 +18,6 @@ export class LoginService {
     this.isUserLoggedIn().then((user) => {
       if (user) {
         this.authState$.set(user);
-        console.log(user);
       }
     });
   }
