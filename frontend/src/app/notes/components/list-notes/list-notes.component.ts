@@ -21,64 +21,68 @@ import { RouterLink } from '@angular/router';
   templateUrl: './list-notes.component.html',
   styleUrls: ['./list-notes.component.css'],
 })
+
 export class ListNotesComponent implements OnInit {
-  // Signals
-  notes = this.noteService.$notes; // Todas las notas
-  activeNotes = this.noteService.$activeNotes; // Notas activas
+  notes = this.noteService.$notes;
+  activeNotes = this.noteService.$activeNotes;
   userId = signal<number | null>(null);
 
-  // Filtros
   searchTitle = signal<string>('');
   startDate = signal<Date | undefined>(undefined);
   endDate = signal<Date | undefined>(undefined);
   order = signal<string | undefined>(undefined);
   orderDirection = signal<string | undefined>(undefined);
 
-  // Computed signal para notas filtradas
   filteredNotes = computed(() => {
+    const titleFilter = this.searchTitle().toLowerCase();
+    const start = this.startDate();
+    const end = this.endDate();
+    const order = this.order();
+    const direction = this.orderDirection();
     let filtered = this.activeNotes();
 
     // Filtro por título
-    const search = this.searchTitle().toLowerCase();
-    if (search) {
-      filtered = filtered.filter((note) =>
-        note.title?.toLowerCase().includes(search)
+    if (titleFilter) {
+      filtered = filtered.filter(note =>
+        note.title?.toLowerCase().includes(titleFilter)
       );
     }
 
     // Filtro por fechas
-    const start = this.startDate();
-    const end = this.endDate();
     if (start || end) {
-      filtered = filtered.filter((note) => {
-        const createdAt = note.createdAt ? new Date(note.createdAt) : null;
+      filtered = filtered.filter(note => {
+        const createdAt = new Date(note.createdAt ?? '');
         return (
-          (!start || (createdAt && createdAt >= start)) &&
-          (!end || (createdAt && createdAt <= end))
+          (!start || createdAt >= new Date(start)) &&
+          (!end || createdAt <= new Date(end))
         );
       });
     }
 
     // Ordenamiento
-    const order = this.order();
-    const orderDirection = this.orderDirection();
-    if (order === 'Titulo') {
-      filtered = filtered.sort((a, b) =>
-        a.title && b.title ? a.title.localeCompare(b.title) : 0
-      );
-    } else if (order === 'Fecha') {
+    if (order) {
       filtered = filtered.sort((a, b) => {
-        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-        return dateA - dateB;
+        if (order === 'title') {
+          const comparison = (a.title ?? '').localeCompare(b.title ?? '');
+          return direction === 'desc' ? -comparison : comparison;
+        } else if (order === 'createdAt') {
+          const comparison =
+            new Date(a.createdAt ?? '').getTime() -
+            new Date(b.createdAt ?? '').getTime();
+          return direction === 'desc' ? -comparison : comparison;
+        }
+        return 0;
       });
     }
-
-    // Dirección del ordenamiento
-    if (orderDirection === 'desc') {
-      filtered = filtered.reverse();
-    }
-
+    console.log(filtered);
+    filtered = filtered.map(note => {
+      if (note.categoriaId) {
+        this.categoryService.getCategoryName(note.categoriaId).then(categoria => {
+          note.categoria = categoria;
+        });
+      }
+      return note;
+    });
     return filtered;
   });
 
@@ -92,7 +96,7 @@ export class ListNotesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading.set(true);
-    this.loginService.isUserLoggedIn().then((user) => {
+    this.loginService.isUserLoggedIn().then(user => {
       if (user) {
         this.userId.set(user.id ?? null);
         this.noteService.getActiveNotes(user.id);
@@ -100,12 +104,8 @@ export class ListNotesComponent implements OnInit {
       this.loading.set(false);
     });
 
-    this.noteService.getNotes(); // Opcional, si necesitas cargar todas las notas
-  }
-
-  // Métodos
-  applyFilter(): void {
-    // La reactividad de las signals hace que este método sea opcional
+    this.noteService.getNotes();
+    console.log(this.filteredNotes());
   }
 
   clearFilters(): void {

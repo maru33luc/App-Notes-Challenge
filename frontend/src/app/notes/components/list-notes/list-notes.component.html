@@ -7,7 +7,13 @@
     <div class="col-md-4">
       <div class="form-group">
         <label for="search">Buscar por Título</label>
-        <input type="text" class="form-control" id="search" placeholder="Buscar por Título" [(ngModel)]="searchTitle">
+        <input
+          type="text"
+          class="form-control"
+          id="search"
+          placeholder="Buscar por Título"
+          [(ngModel)]="searchTitle"
+        />
       </div>
     </div>
 
@@ -24,7 +30,11 @@
     <div class="col-md-4">
       <div class="form-group">
         <label for="orderDirection">Orden</label>
-        <select class="form-control" id="orderDirection" [(ngModel)]="orderDirection">
+        <select
+          class="form-control"
+          id="orderDirection"
+          [(ngModel)]="orderDirection"
+        >
           <option value="asc">Ascendente</option>
           <option value="desc">Descendente</option>
         </select>
@@ -34,76 +44,89 @@
     <div class="col-md-4">
       <div class="form-group">
         <label for="startDate">Fecha de Creación Desde</label>
-        <input id="startDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
-          [(ngModel)]="startDate">
-
-        </div>
+        <input
+          id="startDatePicker"
+          type="date"
+          class="form-control"
+          placeholder="Seleccionar fecha"
+          [(ngModel)]="startDate"
+        />
       </div>
-
-      <div class="col-md-4">
-        <div class="form-group">
-          <label for="endDate">Fecha de Creación Hasta</label>
-          <input id="endDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
-            [(ngModel)]="endDate">
-
-          </div>
-        </div>
-
-        <div class="filters-btn">
-          <div class="col-md-12">
-            <button class="btn btn-secondary" (click)="applyFilter()">Aplicar Filtro</button>
-          </div>
-
-          <div class="col-md-12">
-            <button class="btn btn-primary" (click)="clearFilters()">Limpiar Filtro</button>
-          </div>
-        </div>
-
-      </div>
-
-      <table class="table table-striped mt-3">
-        <thead>
-          <tr>
-            <th scope="col">Título</th>
-            <th scope="col">Contenido</th>
-            <th scope="col">Fecha de creación</th>
-            <th scope="col">Categoría</th>
-            <th scope="col">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          @if (!loading()) {
-            @for (note of filteredNotes() ; track note) {
-              <tr>
-                <td>{{ note.title }}</td>
-                <td>{{ note.content }}</td>
-                <td>{{ note.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td>{{ note.categoria }}</td>
-                <td class="btn-td">
-                  <button class="btn btn-primary btn-sm" [routerLink]="'editar-nota/' + note.id">Editar</button>
-                  <button class="btn btn-dark btn-sm" (click)="fileNote(note.id)">Archivar</button>
-                  <button class="btn btn-danger btn-sm" (click)="deleteNote(note.id)">Eliminar</button>
-                </td>
-              </tr>
-            }
-            @if (userId() && filteredNotes().length === 0) {
-              <tr>
-                <td colspan="5">No hay notas</td>
-              </tr>
-            }
-            @if (!userId()) {
-              <tr>
-                <td colspan="5">Debe loguearse para ver las notas</td>
-              </tr>
-            }
-          } @else {
-            <tr>
-              <td colspan="5">
-                <img class="spinner" src="../../../../assets/img/spinner.svg" alt="Loading spinner">
-              </td>
-            </tr>
-          }
-
-        </tbody>
-      </table>
     </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="endDate">Fecha de Creación Hasta</label>
+        <input
+          id="endDatePicker"
+          type="date"
+          class="form-control"
+          placeholder="Seleccionar fecha"
+          [(ngModel)]="endDate"
+        />
+      </div>
+    </div>
+
+    <div class="filters-btn">
+      <div class="col-md-12">
+        <button class="btn btn-primary" (click)="clearFilters()">
+          Limpiar Filtro
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th scope="col">Título</th>
+        <th scope="col">Contenido</th>
+        <th scope="col">Fecha de creación</th>
+        <th scope="col">Categoría</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (!loading()) { @for (note of filteredNotes() ; track note) {
+      <tr>
+        <td>{{ note.title }}</td>
+        <td>{{ note.content }}</td>
+        <td>{{ note.createdAt | date : "yyyy-MM-dd HH:mm:ss" }}</td>
+        <td>{{ note.categoria }}</td>
+        <td class="btn-td">
+          <button
+            class="btn btn-primary btn-sm"
+            [routerLink]="'editar-nota/' + note.id"
+          >
+            Editar
+          </button>
+          <button class="btn btn-dark btn-sm" (click)="fileNote(note.id)">
+            Archivar
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="deleteNote(note.id)">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+      } @if (userId() && filteredNotes().length === 0) {
+      <tr>
+        <td colspan="5">No hay notas</td>
+      </tr>
+      } @if (!userId()) {
+      <tr>
+        <td colspan="5">Debe loguearse para ver las notas</td>
+      </tr>
+      } } @else {
+      <tr>
+        <td colspan="5">
+          <img
+            class="spinner"
+            src="../../../../assets/img/spinner.svg"
+            alt="Loading spinner"
+          />
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

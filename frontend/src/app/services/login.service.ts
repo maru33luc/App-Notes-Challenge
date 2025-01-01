@@ -5,7 +5,6 @@ import axios from 'axios';
 import { environments } from '../../environments/environments';
 import { isPlatformBrowser } from '@angular/common';
 
-
 @Injectable({
   providedIn: 'root'
 })
