@@ -1,76 +1,77 @@
 <div class="container">
-    <h2>Listado de Notas Archivadas</h2>
+  <h2>Listado de Notas Archivadas</h2>
 
-    <div class="row mt-3">
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="search">Buscar por Título</label>
-                <input type="text" class="form-control" id="search" placeholder="Buscar por Título"
-                    [(ngModel)]="searchTitle">
-            </div>
+  <div class="row mt-3">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="search">Buscar por Título</label>
+        <input type="text" class="form-control" id="search" placeholder="Buscar por Título"
+          [(ngModel)]="searchTitle">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="startDate">Fecha de Creación Desde</label>
+          <input id="startDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
+            [(ngModel)]="startDate">
+
+          </div>
         </div>
 
         <div class="col-md-4">
-            <div class="form-group">
-                <label for="startDate">Fecha de Creación Desde</label>
-                <input id="startDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
-                    [(ngModel)]="startDate">
+          <div class="form-group">
+            <label for="endDate">Fecha de Creación Hasta</label>
+            <input id="endDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
+              [(ngModel)]="endDate">
 
             </div>
-        </div>
+          </div>
 
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="endDate">Fecha de Creación Hasta</label>
-                <input id="endDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
-                    [(ngModel)]="endDate">
-
-            </div>
-        </div>
-
-        <div class="filters-btn">
+          <div class="filters-btn">
             <div class="col-md-12">
               <button class="btn btn-secondary" (click)="applyFilter()">Aplicar Filtro</button>
             </div>
-      
+
             <div class="col-md-12">
               <button class="btn btn-primary" (click)="clearFilters()">Limpiar Filtro</button>
             </div>
           </div>
-    </div>
+        </div>
 
-    <table class="table table-striped mt-3">
-        <thead>
+        <table class="table table-striped mt-3">
+          <thead>
             <tr>
-                <th scope="col">Título</th>
-                <th scope="col">Contenido</th>
-                <th scope="col">Fecha de Creación</th>
-                <th scope="col">Categoría</th>
-                <th scope="col">Acciones</th>
+              <th scope="col">Título</th>
+              <th scope="col">Contenido</th>
+              <th scope="col">Fecha de Creación</th>
+              <th scope="col">Categoría</th>
+              <th scope="col">Acciones</th>
             </tr>
-        </thead>
-        <tbody>
-            <ng-container *ngIf="loading; else loadingContent">
-            <tr *ngFor="let archivedNote of archivedNotes">
-                <td>{{ archivedNote.title }}</td>
-                <td>{{ archivedNote.content }}</td>
-                <td>{{ archivedNote.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td>{{ archivedNote.categoria }}</td>
-                <td>
+          </thead>
+          <tbody>
+            @if (loading) {
+              @for (archivedNote of archivedNotes; track archivedNote) {
+                <tr>
+                  <td>{{ archivedNote.title }}</td>
+                  <td>{{ archivedNote.content }}</td>
+                  <td>{{ archivedNote.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                  <td>{{ archivedNote.categoria }}</td>
+                  <td>
                     <button class="btn btn-success btn-sm" (click)="restoreNote(archivedNote.id)">Restaurar</button>
-                </td>
-            </tr>
-            <tr *ngIf="archivedNotes && archivedNotes.length === 0">
-                <td colspan="5">No hay notas archivadas</td>
-            </tr>
-        </ng-container>
-        <ng-template #loadingContent>
-            <tr>
-              
+                  </td>
+                </tr>
+              }
+              @if (archivedNotes && archivedNotes.length === 0) {
+                <tr>
+                  <td colspan="5">No hay notas archivadas</td>
+                </tr>
+              }
+            } @else {
+              <tr>
                 <img class="spinner" src="../../../../assets/img/spinner.svg" alt="Loading spinner">
-              
-            </tr>
-          </ng-template>
-        </tbody>
-    </table>
-</div>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>

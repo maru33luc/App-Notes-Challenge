@@ -1,15 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { LoginPageComponent } from '../../../auth/pages/login-page/login-page.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    CommonModule, RouterLink, LoginPageComponent
-  ],
+    RouterLink,
+    LoginPageComponent
+],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -19,11 +20,11 @@ export class HeaderComponent {
   userName?: string | null ;
   isMenuOpen = false;
 
-  constructor(private loginService: LoginService, 
+  constructor(private loginService: LoginService,
     private router:Router) {}
 
   ngOnInit(): void {
-   this.loginService.authState$?.subscribe((user) => {
+    const user = this.loginService.authState$();
       if (user) {
         this.isLoggedIn = true;
         this.userName = user.nombre;
@@ -31,13 +32,13 @@ export class HeaderComponent {
         this.isLoggedIn = false;
         this.userName = null;
       }
-    });
+
   }
 
   logout() {
     this.loginService.logout();
     this.isLoggedIn = false;
-    this.loginService.authState$?.next(null);
+    this.loginService.authState$?.set(null);
     this.router.navigate(['/notes-list']);
   }
 

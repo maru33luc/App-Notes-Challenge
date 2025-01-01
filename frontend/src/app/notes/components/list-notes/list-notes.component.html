@@ -37,70 +37,73 @@
         <input id="startDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
           [(ngModel)]="startDate">
 
+        </div>
       </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="endDate">Fecha de Creación Hasta</label>
+          <input id="endDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
+            [(ngModel)]="endDate">
+
+          </div>
+        </div>
+
+        <div class="filters-btn">
+          <div class="col-md-12">
+            <button class="btn btn-secondary" (click)="applyFilter()">Aplicar Filtro</button>
+          </div>
+
+          <div class="col-md-12">
+            <button class="btn btn-primary" (click)="clearFilters()">Limpiar Filtro</button>
+          </div>
+        </div>
+
+      </div>
+
+      <table class="table table-striped mt-3">
+        <thead>
+          <tr>
+            <th scope="col">Título</th>
+            <th scope="col">Contenido</th>
+            <th scope="col">Fecha de creación</th>
+            <th scope="col">Categoría</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (loading) {
+            @for (note of filteredNotes | async; track note) {
+              <tr>
+                <td>{{ note.title }}</td>
+                <td>{{ note.content }}</td>
+                <td>{{ note.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{ note.categoria }}</td>
+                <td class="btn-td">
+                  <button class="btn btn-primary btn-sm" [routerLink]="'editar-nota/' + note.id">Editar</button>
+                  <button class="btn btn-dark btn-sm" (click)="fileNote(note.id)">Archivar</button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteNote(note.id)">Eliminar</button>
+                </td>
+              </tr>
+            }
+            @if (userId() && (filteredNotes | async)?.length === 0) {
+              <tr>
+                <td colspan="5">No hay notas</td>
+              </tr>
+            }
+            @if (!userId()) {
+              <tr>
+                <td colspan="5">Debe loguearse para ver las notas</td>
+              </tr>
+            }
+          } @else {
+            <tr>
+              <td colspan="5">
+                <img class="spinner" src="../../../../assets/img/spinner.svg" alt="Loading spinner">
+              </td>
+            </tr>
+          }
+
+        </tbody>
+      </table>
     </div>
-
-    <div class="col-md-4">
-      <div class="form-group">
-        <label for="endDate">Fecha de Creación Hasta</label>
-        <input id="endDatePicker" type="date" class="form-control" placeholder="Seleccionar fecha"
-          [(ngModel)]="endDate">
-
-      </div>
-    </div>
-
-    <div class="filters-btn">
-      <div class="col-md-12">
-        <button class="btn btn-secondary" (click)="applyFilter()">Aplicar Filtro</button>
-      </div>
-
-      <div class="col-md-12">
-        <button class="btn btn-primary" (click)="clearFilters()">Limpiar Filtro</button>
-      </div>
-    </div>
-
-  </div>
-
-  <table class="table table-striped mt-3">
-    <thead>
-      <tr>
-        <th scope="col">Título</th>
-        <th scope="col">Contenido</th>
-        <th scope="col">Fecha de creación</th>
-        <th scope="col">Categoría</th>
-        <th scope="col">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngIf="loading; else loadingContent">
-        <tr *ngFor="let note of filteredNotes | async">
-          <td>{{ note.title }}</td>
-          <td>{{ note.content }}</td>
-          <td>{{ note.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-          <td>{{ note.categoria }}</td>
-          <td class="btn-td">
-            <button class="btn btn-primary btn-sm" [routerLink]="'editar-nota/' + note.id">Editar</button>
-            <button class="btn btn-dark btn-sm" (click)="fileNote(note.id)">Archivar</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteNote(note.id)">Eliminar</button>
-          </td>
-        </tr>
-
-        <tr *ngIf="userId && (filteredNotes | async)?.length === 0">
-          <td colspan="5">No hay notas</td>
-        </tr>
-        <tr *ngIf="!userId">
-          <td colspan="5">Debe loguearse para ver las notas</td>
-        </tr>
-
-      </ng-container>
-      <ng-template #loadingContent>
-        <tr>
-          <td colspan="5">
-            <img class="spinner" src="../../../../assets/img/spinner.svg" alt="Loading spinner">
-          </td>
-        </tr>
-      </ng-template>
-
-    </tbody>
-  </table>
-</div>

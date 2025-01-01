@@ -2,31 +2,30 @@ import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Category } from '../../../interfaces/Category';
 import { CategoryService } from '../../../services/category.service';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [CommonModule,
-  ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
 export class CategoryListComponent implements OnInit {
   categories: Category[] = [];
-  
+
   constructor(private categoryService: CategoryService, private router: Router) {}
 
   ngOnInit(): void {
-    this.categoryService.categories$?.subscribe((categories) => {
-      this.categories = categories;
-    });
+    this.loadCategories()
+    console.log(this.categories);
   }
 
   async loadCategories(): Promise<void> {
     this.categories = await this.categoryService.getCategories();
+    console.log(this.categories);
   }
 
   editCategory(category: Category): void {

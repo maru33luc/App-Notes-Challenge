@@ -1,9 +1,8 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../interfaces/User';
 import axios from 'axios';
 import { environments } from '../../environments/environments';
-import { CookieService } from 'ngx-cookie-service';
 import { isPlatformBrowser } from '@angular/common';
 
 
@@ -12,13 +11,14 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class LoginService {
 
-  authState$: BehaviorSubject<any> | undefined = new BehaviorSubject(null);
+  authState$ = signal<User|null>(null);
   userUrl = environments.urlBackUsers;
 
-  constructor(private cookieS: CookieService, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor( @Inject(PLATFORM_ID) private platformId: Object) {
     this.isUserLoggedIn().then((user) => {
       if (user) {
-        this.authState$?.next(user);
+        this.authState$.set(user);
+        console.log(user);
       }
     });
   }
@@ -39,7 +39,7 @@ export class LoginService {
       if (isPlatformBrowser(this.platformId)) {
         if (user && !user.data.error) {
           localStorage.setItem('user', JSON.stringify(user.data));
-          this.authState$?.next(user.data);
+          this.authState$?.set(user.data);
           alert('Sesión iniciada con éxito');
           window.location.href = '/notes-list';
           return user.data;
@@ -83,7 +83,7 @@ export class LoginService {
   async logout() {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('user');
-      this.authState$?.next(null);
+      this.authState$?.set(null);
       window.location.href = '/notes-list';
       alert('Sesión cerrada con éxito');
     }

@@ -3,13 +3,12 @@ import { LoginService } from '../../../services/login.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoteService } from '../../../services/note.service';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [CommonModule,
-    ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.css'
 })
@@ -21,16 +20,18 @@ export class LoginFormComponent {
     private loginService: LoginService,
     private formBuilder: FormBuilder,
     private noteService: NoteService) {
-      this.loginService.authState$?.subscribe((user) => {
-        if(user){
-          this.userId = user.id;
-        }
-      });
+      // this.loginService.authState$?.subscribe((user) => {
+      //   if(user){
+      //     this.userId = user.id;
+      //   }
+      // });
+
+      this.userId = this.loginService.authState$()?.id;
      }
 
   loginForm: FormGroup = this.formBuilder.group({
-    correo: ['', [Validators.required, Validators.email]],
-    contraseñaHash: ['', [Validators.required]]
+    correo: ['maru@gmail.com', [Validators.required, Validators.email]],
+    contraseñaHash: ['123456', [Validators.required]]
   });
 
   login() {

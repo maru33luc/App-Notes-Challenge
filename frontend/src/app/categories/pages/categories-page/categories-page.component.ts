@@ -1,7 +1,7 @@
 
 import { Component } from '@angular/core';
 import { CategoryListComponent } from '../../components/categories/categories.component';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 
@@ -9,7 +9,7 @@ import { HeaderComponent } from '../../../shared/components/header/header.compon
 @Component({
   selector: 'app-categories-page',
   standalone: true,
-  imports:[CommonModule, HeaderComponent, CategoryListComponent],
+  imports: [HeaderComponent, CategoryListComponent],
   templateUrl: './categories-page.component.html',
   styleUrl: './categories-page.component.css'
 })

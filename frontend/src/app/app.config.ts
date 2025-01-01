@@ -6,6 +6,5 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { CookieService } from 'ngx-cookie-service';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideClientHydration(),
-  CookieService]
+  providers: [provideRouter(routes), provideClientHydration()]
 };

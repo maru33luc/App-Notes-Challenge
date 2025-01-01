@@ -21,22 +21,22 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./archive.component.css']
 })
 export class ArchivoComponent implements OnInit {
-  archivedNotes: Note[] = []; 
-  searchTitle: string = ''; 
+  archivedNotes: Note[] = [];
+  searchTitle: string = '';
   startDate: Date | undefined;
   endDate: Date | undefined;
   userId?: number;
   loading: boolean = false;
 
   constructor(private noteService: NoteService, private categoryService: CategoryService, private loginService:LoginService) {
-    this.loginService.authState$?.subscribe((user) => {
+    const user = this.loginService.authState$();
       if(user){
         this.userId = user.id;
         this.getArchivedNotes();
       }else{
         this.loading = true;
       }
-    });
+
   }
 
   ngOnInit() {
@@ -58,8 +58,8 @@ export class ArchivoComponent implements OnInit {
         note.categoria = await this.categoryService.getCategoryName(note.categoriaId);
       }
     }
-    
-    this.archivedNotes = notes || []; 
+
+    this.archivedNotes = notes || [];
     this.loading = true;
   }
 

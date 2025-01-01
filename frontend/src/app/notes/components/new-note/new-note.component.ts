@@ -2,7 +2,7 @@ import { NoteService } from './../../../services/note.service';
 import { Component, OnInit } from '@angular/core';
 import { Note } from '../../../interfaces/Note';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormNotesComponent } from '../form-notes/form-notes.component';
 
@@ -10,9 +10,9 @@ import { FormNotesComponent } from '../form-notes/form-notes.component';
   selector: 'app-new-note',
   standalone: true,
   imports: [
-    CommonModule,
-    NgbModule, FormNotesComponent
-  ],
+    NgbModule,
+    FormNotesComponent
+],
   templateUrl: './new-note.component.html',
   styleUrls: ['./new-note.component.css']
 })

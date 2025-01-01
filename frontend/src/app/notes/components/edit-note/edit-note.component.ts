@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NoteService } from '../../../services/note.service';
 import { Note } from '../../../interfaces/Note';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormNotesComponent } from '../form-notes/form-notes.component';
 
@@ -10,9 +10,9 @@ import { FormNotesComponent } from '../form-notes/form-notes.component';
   selector: 'app-edit-note',
   standalone: true,
   imports: [
-    CommonModule,
-    NgbModule, FormNotesComponent
-  ],
+    NgbModule,
+    FormNotesComponent
+],
   templateUrl: './edit-note.component.html',
   styleUrl: './edit-note.component.css'
 })

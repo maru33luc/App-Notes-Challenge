@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Note } from '../../../interfaces/Note';
 import { NoteService } from '../../../services/note.service';
 import { CategoryService } from '../../../services/category.service';
-import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from '../../../services/login.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -32,48 +31,57 @@ export class ListNotesComponent {
   order?: string;
   orderDirection?: string;
   loading: boolean = false;
-  userId?: number;
+  userId = signal<number | null>(null);
 
   constructor(private noteService: NoteService,
-    private categoryService: CategoryService, private cookieS: CookieService, private loginService: LoginService) {
+    private categoryService: CategoryService, private loginService: LoginService) {
 
-    this.loginService.authState$?.subscribe((user) => {
-      if (user) {
+      this.loginService.isUserLoggedIn().then(user => {
+        console.log(user);
 
-        this.userId = user.id;
-        this.noteService.getActiveNotes(user.id).then(notes => {
-          if (notes) {
-            this.notes = notes;
-            if (Array.isArray(this.notes)) {
-              this.filteredNotes = new Observable<Note[]>(observer => {
-                observer.next(this.notes ?? []);
-                observer.complete();
-              });
-              if (this.filteredNotes) {
-                this.loading = true;
+        if (user) {
+          console.log(user);
+
+          if (user.id !== undefined) {
+            this.userId.set(user.id);
+
+            this.noteService.getActiveNotes(user.id).then(notes => {
+              if (notes) {
+                this.notes = notes;
+                console.log(this.notes);
+                if (Array.isArray(this.notes)) {
+                  this.filteredNotes = new Observable<Note[]>(observer => {
+                    observer.next(this.notes ?? []);
+                    observer.complete();
+                  });
+
+                  this.loading = true;
+                } else {
+                  this.filteredNotes = new Observable<Note[]>(observer => {
+                    observer.next([]);
+                    observer.complete();
+                  });
+                  this.loading = true;
+                }
               }
-              this.loading = true;
-            } else {
-              this.filteredNotes = new Observable<Note[]>(observer => {
-                observer.next([]);
-                observer.complete();
-              });
-              this.loading = true;
-            }
+            });
           }
-        });
-      } else{
-        this.loading = true;
 
-        this.noteService.$notes.subscribe((notes) => {
-          this.notes = notes;
-          this.filteredNotes = new Observable<Note[]>(observer => {
-            observer.next(this.notes ?? []);
-            observer.complete();
+        } else{
+          this.loading = true;
+
+          this.noteService.$notes.subscribe((notes) => {
+            this.notes = notes;
+            this.filteredNotes = new Observable<Note[]>(observer => {
+              observer.next(this.notes ?? []);
+              observer.complete();
+            });
           });
-        });
-      }
-    });
+        }
+      });
+
+
+
   }
 
   ngOnInit(): void {
@@ -186,9 +194,11 @@ export class ListNotesComponent {
   }
 
   async clearFilters() {
-    const res = await this.noteService.getActiveNotes(this.userId);
-    if (res) {
-      this.notes = res;
+    const id = this.userId();
+    if(id){
+      this.notes = await this.noteService.getActiveNotes(id);
+    }else{
+      this.notes = await this.noteService.getNotes();
     }
     this.searchTitle = '';
     this.startDate = undefined;
@@ -210,3 +220,5 @@ export class ListNotesComponent {
   }
 
 }
+
+

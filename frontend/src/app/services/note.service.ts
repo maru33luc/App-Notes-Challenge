@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Note } from '../interfaces/Note';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { environments } from '../../environments/environments';
 
 @Injectable({
