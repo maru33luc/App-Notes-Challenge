@@ -7,10 +7,10 @@ module.exports = {
         "password": process.env.DB_PASSWORD,
         "database": process.env.DB_NAME,
         "host": process.env.DB_HOST,
-        // "dialect": "postgres",
-        "dialect": "mysql",
+        "dialect": "postgres",
+        // "dialect": "mysql",
         "port": process.env.DB_PORT,
-        // "schema": "public",
+        "schema": "public",
         // "dialectOptions": {
         //     "ssl": {
         //         "require": true,

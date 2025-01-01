@@ -23,8 +23,8 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "https://app-notes-challenge-frontend.vercel.app/",
-    // origin: 'http://localhost:4200',
+    // origin: "https://app-notes-challenge-frontend.vercel.app/",
+    origin: ['http://localhost:4200','https://app-notes-challenge-frontend.vercel.app/'],
     credentials: true,
   })
 );

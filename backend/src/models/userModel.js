@@ -30,7 +30,7 @@ const User = db.define('usuarios', {
   }
 }, 
 {  timestamps: true,
-  // schema: 'public'
+  schema: 'public'
 
     }
   );

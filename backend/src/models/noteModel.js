@@ -42,7 +42,7 @@ const Note = db.define('notas', {
     
 }, 
 { timestamps: true,
-    // schema: 'public'
+    schema: 'public'
 
 }
 );

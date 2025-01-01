@@ -26,7 +26,7 @@ const Category = db.define('categorias', {
     }, 
     
     { timestamps: true,
-        // schema: 'public' 
+        schema: 'public' 
     })
         ;
 
