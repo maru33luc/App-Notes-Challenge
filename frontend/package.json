@@ -3,26 +3,25 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve ", 
+    "start": "ng serve ",
     "build": "ng build ",
     "build --prod": "ng build ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:frontend": "node dist/frontend/server/main.server.mjs"
-    
   },
   "dependencies": {
-    "@angular/animations": "^17.0.0",
-    "@angular/cli": "^17.0.10",
-    "@angular/common": "^17.0.0",
-    "@angular/compiler": "^17.0.0",
-    "@angular/core": "^17.0.0",
-    "@angular/forms": "^17.0.0",
-    "@angular/platform-browser": "^17.0.0",
-    "@angular/platform-browser-dynamic": "^17.0.0",
-    "@angular/platform-server": "^17.0.0",
-    "@angular/router": "^17.0.0",
-    "@angular/ssr": "^17.0.9",
+    "@angular/animations": "^18.2.13",
+    "@angular/cli": "^18.2.12",
+    "@angular/common": "^18.2.13",
+    "@angular/compiler": "^18.2.13",
+    "@angular/core": "^18.2.13",
+    "@angular/forms": "^18.2.13",
+    "@angular/platform-browser": "^18.2.13",
+    "@angular/platform-browser-dynamic": "^18.2.13",
+    "@angular/platform-server": "^18.2.13",
+    "@angular/router": "^18.2.13",
+    "@angular/ssr": "^18.2.12",
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "angular": "^1.8.3",
     "axios": "^1.6.5",
@@ -45,6 +44,6 @@
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.3.4"
+    "@angular-devkit/build-angular": "^18.2.12"
   }
 }
