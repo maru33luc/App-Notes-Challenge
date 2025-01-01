@@ -1,73 +1,140 @@
 # Notes App - Full Stack Implementation Exercise
 
-This project is a web application that allows you to efficiently manage your notes. You can create, edit, archive, and filter your notes according to your needs. The implementation is divided into two phases: note creation and the application of tags and filtering.
+Esta es una aplicación web que te permite gestionar tus notas de manera eficiente. Puedes crear, editar, archivar y filtrar tus notas según tus necesidades. La implementación está dividida en dos fases: creación de notas y aplicación de categorías con filtrado.
 
-## Features
-### Phase 1: Note Creation 
+## Características
 
-- Create, Edit, and Delete Notes: You can create new notes, edit their content, and delete them as needed.
-- Create, Edit and Delete Categories of Notes: You can create new categories, edit their content, and delete them as needed.
-- Archive/Unarchive Notes: The ability to archive and unarchive notes allows you to organize your ideas and maintain a clean space.
-- Notes Listing: Easily view your active and archived notes for quick access.
+### Fase 1: Creación de Notas
 
-### Phase 2: Tag Application and Filtering
+- **Crear, Editar y Eliminar Notas:** Puedes crear nuevas notas, editar su contenido y eliminarlas según sea necesario.
+- **Crear, Editar y Eliminar Categorías de Notas:** Puedes crear nuevas categorías, editarlas y eliminarlas según tus necesidades.
+- **Archivar/Desarchivar Notas:** Organiza tus ideas archivando y desarchivando notas para mantener un espacio limpio.
+- **Listado de Notas:** Visualiza fácilmente tus notas activas y archivadas para un acceso rápido.
 
-- Note Categories: Add categories to your notes for more advanced organization.
-- Category Filtering: Filter your notes by assigned categories, making it easier to find specific information.
+### Fase 2: Aplicación de Categorías y Filtrado
 
-### Additional Functionality
+- **Categorías de Notas:** Añade categorías a tus notas para una organización avanzada.
+- **Filtrado por Categorías:** Filtra tus notas por las categorías asignadas para encontrar información específica de manera sencilla.
 
-- Login: Securely access the app with a login screen. 
-- Server-Side Rendering (SSR): Implemented for more efficient initial rendering.
+## Funcionalidades Adicionales
 
-## Technologies Used
+- **Inicio de Sesión:** Accede de forma segura a la aplicación con una pantalla de login.
+- **Renderizado del Lado del Servidor (SSR):** Implementado para un renderizado inicial más eficiente.
 
-- **Frontend:** Angular v17, Bootstrap v5.3.2, Axios, NgBootstrap, RxJS, TypeScript
-- **Backend:** Node.js with Express, Bcrypt, Cookie-parser, Cors, Dotenv, Express-session, PostgreSQL with Sequelize ORM
-- **Server-Side Rendering:** Implemented for faster initial rendering.
+## Tecnologías Utilizadas
 
-## Running the Application
+- **Frontend:** Angular v17, Bootstrap v5.3.2, Axios, NgBootstrap, RxJS, TypeScript.
+- **Backend:** Node.js con Express, Bcrypt, Cookie-parser, Cors, Dotenv, Express-session, MySQL con Sequelize ORM.
+- **SSR:** Implementado para un renderizado inicial más rápido.
 
-1. Clone the repository: git clone https://github.com/your-username/your-repo.git
-2. The script.sh file for Linux will install the necessary dependencies and start the application (NOTE: this script is configured for mysql). Run the following command in the terminal:
+## Configuración y Ejecución de la Aplicación
 
-   ```bash
-   sh script.sh
-   ```
-3. The script.bat file for Windows will install the necessary dependencies and start the application (NOTE: this script is configured for mysql). Run the following command in the terminal:
+### Opción 1: Usar los Scripts Automáticos
 
-   ```bash
-   script.bat
-   ```
-4. The application will open in your default browser at http://localhost:4200.
+1. **Clonar el Repositorio:**
 
+```bash
+git clone https://github.com/your-username/your-repo.git
+```
 
-## Configuration
+2. **Completar las Variables de Configuración:**
 
-### Backend Configuration
+   Si usas el archivo `script.sh` (Linux/macOS) o `script.bat` (Windows), edítalo para configurar las variables de la base de datos:
+   - `MYSQL_USER`: Tu usuario de MySQL.
+   - `MYSQL_DATABASE`: El nombre de la base de datos.
+   - `MYSQL_PASSWORD`: Tu contraseña de MySQL.
 
-1. Navigate to the backend folder: `cd backend`
-2. Create a new file named `.env` in the `backend` folder.
-3. Open the `.env` file and add the following variables, replacing the values with your own configuration:
+   Por ejemplo, para `script.bat`:
 
-   ```env
-   DB_HOST=localhost
-   DB_USER=your_database_user
-   DB_PASSWORD=your_database_password
-   DB_NAME=notas_challenge
-   DB_PORT=5432 (the default port for PostgreSQL)
+```bat
+set MYSQL_USER=root
+set MYSQL_DATABASE=notas_challenge
+set MYSQL_PASSWORD=tu_contraseña
+```
 
-4. Run the migrations for create the tables in the database:
+3. **Ejecutar el Script:**
 
-   ```bash
-   npx sequelize-cli db:migrate
-   ```
+   - Linux/macOS:
 
-## Deployed Version
-Link to the deployed version on Heroku
+```bash
+sh script.sh
+```
 
-### Acknowledgments
+- Windows:
 
-- This project was created by [Marina Lucero]
+```cmd
+script.bat
+```
 
-Thank you for reviewing this application. If you have any questions or suggestions, feel free to contact us. Enjoy managing your notes efficiently!
+4. **Acceder a la Aplicación:** La aplicación estará disponible en tu navegador en `http://localhost:4200`.
+
+### Opción 2: Configuración Manual con .env
+
+1. **Configurar el Backend:**
+
+   Navega a la carpeta del backend:
+
+```bash
+cd backend
+```
+
+   Crea un archivo `.env` en la carpeta backend y añade las siguientes variables:
+
+```env
+DB_HOST=localhost
+DB_USER=tu_usuario_mysql
+DB_PASSWORD=tu_contraseña_mysql
+DB_NAME=notas_challenge
+DB_PORT=3306
+```
+
+2. **Instalar Dependencias:**
+
+```bash
+npm install
+```
+
+3. **Ejecutar Migraciones:**
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+4. **Configurar el Frontend:**
+
+   Navega a la carpeta del frontend:
+
+```bash
+cd ../frontend
+```
+
+   Instala las dependencias:
+
+```bash
+npm install
+```
+
+5. **Iniciar la Aplicación:**
+
+   Inicia el backend:
+
+```bash
+npm start
+```
+
+   En otra terminal, inicia el frontend:
+
+```bash
+cd frontend
+npm start
+```
+
+6. **Acceder a la Aplicación:** Abre tu navegador y dirígete a `http://localhost:4200`.
+
+## Versión Desplegada
+
+Consulta la versión en línea en <https://app-notes-client.vercel.app/#/home>
+
+## Reconocimientos
+
+Este proyecto fue creado por **Marina Lucero**.
