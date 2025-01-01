@@ -74,7 +74,6 @@ export class ListNotesComponent implements OnInit {
         return 0;
       });
     }
-    console.log(filtered);
     filtered = filtered.map(note => {
       if (note.categoriaId) {
         this.categoryService.getCategoryName(note.categoriaId).then(categoria => {
@@ -105,7 +104,6 @@ export class ListNotesComponent implements OnInit {
     });
 
     this.noteService.getNotes();
-    console.log(this.filteredNotes());
   }
 
   clearFilters(): void {
