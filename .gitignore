@@ -22,3 +22,6 @@ backend/*.log
 #Environments
 /environments/
 
+script.sh
+script.bat
+scriptPG.sh

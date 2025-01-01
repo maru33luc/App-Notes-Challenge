@@ -11,6 +11,6 @@ export const environments = {
     urlBackCategories: domain + 'categories',
     urlBackNotes: domain + 'notes',
     urlBackUsers: domain + 'users',
-    
+
 
 };
