@@ -11,12 +11,12 @@ module.exports = {
         // "dialect": "mysql",
         "port": process.env.DB_PORT,
         "schema": "public",
-        // "dialectOptions": {
-        //     "ssl": {
-        //         "require": true,
-        //         "rejectUnauthorized": false
-        //     }
-        // }
+        "dialectOptions": {
+            "ssl": {
+                "require": true,
+                "rejectUnauthorized": false
+            }
+        }
     },
     "test": {
         "username": process.env.DB_USER,
