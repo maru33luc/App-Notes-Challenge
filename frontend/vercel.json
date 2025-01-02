@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/*": {
+      "runtime": "nodejs16.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "destination": "/api/ssr"
+    }
+  ]
+}
