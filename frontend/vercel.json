@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/frontend/server/main.server.mjs",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/frontend/server/main.server.mjs"
+    }
+  ],
+  "build": {
+    "env": {
+      "NODE_VERSION": "18.x"
+    }
+  }
+}

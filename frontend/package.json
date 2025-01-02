@@ -3,12 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve ",
-    "build": "ng build ",
-    "build --prod": "ng build --prod",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:frontend": "node dist/frontend/server/main.server.mjs"
+    "build": "ng build && ng run frontend:server",
+    "start": "ng serve",
+    "serve:ssr": "node dist/frontend/server/main.server.mjs",
+    "vercel-build": "npm run build"
   },
   "dependencies": {
     "@angular/animations": "^18.2.13",
