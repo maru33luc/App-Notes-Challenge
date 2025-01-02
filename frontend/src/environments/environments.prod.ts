@@ -1,5 +1,5 @@
 // const domain = 'http://localhost:3000/';
-const domain = 'https://app-notes-challenge-server.onrender.com/';
+const domain = 'https://app-notes-challenge.onrender.com/';
 
 
 export const environments = {
