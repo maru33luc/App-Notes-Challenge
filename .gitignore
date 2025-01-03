@@ -25,3 +25,4 @@ backend/*.log
 script.sh
 script.bat
 scriptPG.sh
+.vercel

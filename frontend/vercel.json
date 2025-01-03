@@ -11,10 +11,5 @@
       "src": "/(.*)",
       "dest": "dist/frontend/server/main.server.mjs"
     }
-  ],
-  "build": {
-    "env": {
-      "NODE_VERSION": "22.x"
-    }
-  }
+  ]
 }
