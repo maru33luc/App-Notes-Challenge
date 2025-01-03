@@ -5,7 +5,7 @@
     "ng": "ng",
     "build": "npm install --force && ng build",
     "start": "ng serve",
-    "serve:ssr": "node dist/frontend/server/main.js",
+    "serve:ssr": "node dist/frontend/server/server.mjs",
     "vercel-build": "npm run build"
   },
   "dependencies": {
