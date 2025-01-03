@@ -6,7 +6,7 @@
   "scripts": {
    "test": "echo \"Error: no test specified\" && exit 1",
     "build": " npm install && cd backend && npm install && cd ../frontend && npm install && ng build && npm run serve:ssr ",
-    "start": " cd backend && npm run start "
+    "start": " cd backend && npm install && npm run start && cd ../frontend && npm install && npm run serve:ssr "
   },
   "dependencies": {
     "@angular/animations": "^17.0.0",
