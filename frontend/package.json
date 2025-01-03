@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "npm install --force && ng build",
+    "build": "ng build",
     "start": "ng serve",
     "serve:ssr": "node dist/frontend/server/server.mjs",
     "vercel-build": "npm run build"
