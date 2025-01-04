@@ -64,6 +64,13 @@
           },
           "defaultConfiguration": "production"
         },
+        "server": {
+          "options": {
+            "outputPath": "dist/frontend/server",
+            "main": "src/main.server.ts",
+            "tsConfig": "tsconfig.server.json"
+          }
+        },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
