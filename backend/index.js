@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ['http://localhost:4200', 'http://localhost:4000','https://app-notes-challenge-frontend.vercel.app', 'https://app-notes-challenge.onrender.com','app-notes-challenge-8u60qyqze-maru33lucs-projects.vercel.app','https://app-notes-challenge-cli.vercel.app'],
+    origin: ['http://localhost:4200', 'http://localhost:4000','https://app-notes-challenge-frontend.vercel.app', 'https://app-noteshttps://app-notes-challenge-ga7l7hv82-maru33lucs-projects.vercel.app/','https://app-notes-challenge-cli.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true,
