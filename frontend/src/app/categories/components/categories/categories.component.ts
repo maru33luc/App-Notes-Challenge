@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, computed, OnInit, signal, SimpleChanges } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Category } from '../../../interfaces/Category';
 import { CategoryService } from '../../../services/category.service';
@@ -14,16 +14,12 @@ import { Observable } from 'rxjs';
   styleUrls: ['./categories.component.css']
 })
 export class CategoryListComponent implements OnInit {
-  categories: Category[] = [];
+  categories = computed(() => this.categoryService.categories());
 
-  constructor(private categoryService: CategoryService, private router: Router) {}
+  constructor(private categoryService: CategoryService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loadCategories()
-  }
-
-  async loadCategories(): Promise<void> {
-    this.categories = await this.categoryService.getCategories();
+    console.log(this.categories());
   }
 
   editCategory(category: Category): void {

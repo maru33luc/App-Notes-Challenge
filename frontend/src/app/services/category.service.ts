@@ -10,14 +10,12 @@ import axios from 'axios';
 export class CategoryService {
 
   categoryUrl = environments.urlBackCategories;
-  categories$ = signal<Category[]>([]);
+  categories = signal<Category[]>([]);
 
-  constructor() {}
-
-  ngOnInit(){
+  constructor() {
     this.getCategories().then((categories) => {
       if (categories) {
-        this.categories$.set(categories);
+        this.categories.set(categories);
       }
     });
   }
@@ -51,6 +49,7 @@ export class CategoryService {
         method: 'DELETE',
       });
       const data = await res.json();
+      this.categories?.set(await this.getCategories());
       return data;
     }catch(err){
       console.log(err);
@@ -70,7 +69,7 @@ export class CategoryService {
       const data = await res.json();
       if(data.id){
         const categories = await this.getCategories();
-        this.categories$.set(categories);
+        this.categories.set(categories);
         return data;
       }
       return undefined;
@@ -101,7 +100,7 @@ export class CategoryService {
         body: JSON.stringify(category)
       });
       const data = await res.json();
-      this.categories$?.set(await this.getCategories());
+      this.categories?.set(await this.getCategories());
       return data;
     }catch(err){
       console.log(err);

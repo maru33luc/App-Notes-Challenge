@@ -14,20 +14,14 @@ import { NoteService } from '../../../services/note.service';
 })
 export class LoginFormComponent {
 
-  userId? : number;
+  userId?: number | null;
 
   constructor(private router: Router,
     private loginService: LoginService,
     private formBuilder: FormBuilder,
     private noteService: NoteService) {
-      // this.loginService.authState$?.subscribe((user) => {
-      //   if(user){
-      //     this.userId = user.id;
-      //   }
-      // });
-
-      this.userId = this.loginService.authState$()?.id;
-     }
+    this.userId = this.loginService.authState$()?.id ?? null;
+  }
 
   loginForm: FormGroup = this.formBuilder.group({
     correo: ['maru@gmail.com', [Validators.required, Validators.email]],
@@ -40,7 +34,7 @@ export class LoginFormComponent {
     } else {
       try {
         this.loginService.login(this.loginForm.value.correo, this.loginForm.value.contraseñaHash);
-        this.noteService.getActiveNotes(this.userId);
+        this.noteService.getActiveNotes(this.userId ?? null);
 
       } catch (e) {
         console.log(e);

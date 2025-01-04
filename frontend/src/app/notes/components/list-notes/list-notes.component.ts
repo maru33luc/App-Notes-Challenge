@@ -23,8 +23,7 @@ import { RouterLink } from '@angular/router';
 })
 
 export class ListNotesComponent implements OnInit {
-  notes = this.noteService.$notes;
-  activeNotes = this.noteService.$activeNotes;
+  activeNotes = computed(() => this.noteService.activeNotes());
   userId = signal<number | null>(null);
 
   searchTitle = signal<string>('');
@@ -39,7 +38,7 @@ export class ListNotesComponent implements OnInit {
     const end = this.endDate();
     const order = this.order();
     const direction = this.orderDirection();
-    let filtered = this.activeNotes();
+    let filtered = computed(() => this.activeNotes())();
 
     // Filtro por título
     if (titleFilter) {
@@ -91,20 +90,30 @@ export class ListNotesComponent implements OnInit {
     private noteService: NoteService,
     private categoryService: CategoryService,
     private loginService: LoginService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loading.set(true);
     this.loginService.isUserLoggedIn().then(user => {
       if (user) {
         this.userId.set(user.id ?? null);
-        this.noteService.getActiveNotes(user.id);
+        this.activeNotes = computed(() => this.noteService.activeNotes());
+      } else {
+        this.userId.set(null);
       }
       this.loading.set(false);
     });
 
-    this.noteService.getNotes();
+    this.noteService.getActiveNotes(this.userId())
   }
+
+  ngOnChanges(): void {
+    const userId = this.userId();
+    if (userId) {
+      this.noteService.getActiveNotes(userId);
+    }
+  }
+
 
   clearFilters(): void {
     this.searchTitle.set('');

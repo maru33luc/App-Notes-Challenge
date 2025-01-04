@@ -1,3 +1,4 @@
+import { User } from './../interfaces/User';
 import { Injectable, signal } from '@angular/core';
 import { Note } from '../interfaces/Note';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -8,37 +9,29 @@ import { LoginService } from './login.service';
   providedIn: 'root'
 })
 export class NoteService {
-
-  $notes = signal<Note[]>([]);
-  $inactiveNotes = signal<Note[]>([]);
-  $activeNotes = signal<Note[]>([]);
+  inactiveNotes = signal<Note[]>([]);
+  activeNotes = signal<Note[]>([]);
   notesUrl = environments.urlBackNotes;
+  userId = signal<number | null>(null);
 
   constructor(private loginService: LoginService) {
-    const userId = this.loginService.authState$()?.id;
-    this.getActiveNotes(userId);
-
-  }
-
-  async getNotes() {
-    try {
-      const res = await fetch(this.notesUrl);
-      if (res.ok) {
-        const notes = await res.json();
-        this.$notes.set(notes);
+    this.loginService.isUserLoggedIn().then(user => {
+      if (user) {
+        this.userId.set(user.id ?? null);
+        this.getActiveNotes(this.userId());
+      }else{
+        this.userId.set(null);
       }
-    } catch (err) {
-      console.error('Error fetching notes:', err);
-    }
+    });
   }
 
-  async getActiveNotes (id: number | undefined) {
+  async getActiveNotes (id: number | null) {
     if (!id) return;
     try {
       const res = await fetch(`${this.notesUrl}/${id}/status/1`);
       if (res.ok) {
         const activeNotes = await res.json();
-        this.$activeNotes.set(activeNotes);
+        this.activeNotes.set(activeNotes);
       }
     } catch (err) {
       console.error('Error fetching active notes:', err);
@@ -51,7 +44,7 @@ export class NoteService {
       const res = await fetch(`${this.notesUrl}/${id}/status/0`);
       if (res.ok) {
         const inactiveNotes = await res.json();
-        this.$inactiveNotes.set(inactiveNotes);
+        this.inactiveNotes.set(inactiveNotes);
         return inactiveNotes;
       }
     } catch (err) {
@@ -59,7 +52,6 @@ export class NoteService {
     }
     return undefined;
   }
-
 
   async createNote(note: Note) {
     try {
@@ -70,6 +62,10 @@ export class NoteService {
           'Content-Type': 'application/json'
         }
       });
+      const userId = this.userId();
+    if (userId) {
+      await this.getActiveNotes(userId);
+    }
     } catch (err) {
       console.log(err);
     }
@@ -94,7 +90,7 @@ export class NoteService {
           'Content-Type': 'application/json'
         }
       });
-      this.getNotes();
+      this.getActiveNotes(this.userId());
 
     } catch (err) {
       console.log(err);

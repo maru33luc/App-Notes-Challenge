@@ -36,19 +36,17 @@ export class ArchivoComponent implements OnInit {
       }else{
         this.loading = true;
       }
-
   }
 
   ngOnInit() {
 
-      this.archivedNotes = this.noteService.$inactiveNotes();
+      this.archivedNotes = this.noteService.inactiveNotes();
       if (this.archivedNotes) {
         for (let note of this.archivedNotes) {
           this.categoryService.getCategoryName(note.categoriaId).then((categoria) => {
             note.categoria = categoria;
         });
       }
-
   }}
 
   async getArchivedNotes() {
@@ -59,7 +57,6 @@ export class ArchivoComponent implements OnInit {
         note.categoria = await this.categoryService.getCategoryName(note.categoriaId);
       }
     }
-
     this.archivedNotes = notes || [];
     this.loading = true;
   }

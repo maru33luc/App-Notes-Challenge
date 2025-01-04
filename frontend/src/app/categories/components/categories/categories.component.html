@@ -3,7 +3,7 @@
 
   <a class="btn btn-success" [routerLink]="['nueva-categoria']">Nueva Categoría</a>
 
-  @if (categories && categories.length > 0) {
+  @if (categories() && categories().length > 0) {
     <table class="table mt-3">
       <thead>
         <tr>
@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (category of categories; track category) {
+        @for (category of categories(); track category) {
           <tr>
             <td>{{ category.nombre }}</td>
             <td>{{ category.descripcion }}</td>
@@ -29,7 +29,7 @@
     </table>
   }
 
-  @if (categories && categories.length === 0) {
+  @if (categories() && categories().length === 0) {
     <div>
       No hay categorías.
     </div>
