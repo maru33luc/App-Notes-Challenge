@@ -6,7 +6,7 @@
     "build": "ng build",
     "start": "ng serve",
     "serve": "node dist/frontend/server/server.mjs",
-     "vercel-build": "ng build --configuration=production && ng run frontend:server:production"
+    "vercel-build": "npm run build"
   },
   "dependencies": {
     "@angular/animations": "^17.0.0",
